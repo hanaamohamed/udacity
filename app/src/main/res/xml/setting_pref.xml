@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Setting Preferences">
+        <ListPreference
+            android:title="Sort-By"
+            android:key="@string/sorting"
+            android:defaultValue="@string/most_popular"
+            android:entryValues="@array/sorting"
+            android:entries="@array/sorting">
+        </ListPreference>
+    </PreferenceCategory>
+</PreferenceScreen>
