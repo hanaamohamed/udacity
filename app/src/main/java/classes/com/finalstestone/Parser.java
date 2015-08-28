@@ -9,10 +9,12 @@ import java.util.List;
 
 public class Parser {
     public static List<Response.ResultsEntity> getData(String jsonStr){
-        ArrayList<Response.ResultsEntity> resultsEntities = new ArrayList<>();
-        Gson gson = new Gson();
-        Response response = gson.fromJson(jsonStr,Response.class);
-        return response.getResults();
+        if (jsonStr!=null) {
+            Gson gson = new Gson();
+            Response response = gson.fromJson(jsonStr, Response.class);
+            return response.getResults();
+        }else
+            return null;
     }
 
 }

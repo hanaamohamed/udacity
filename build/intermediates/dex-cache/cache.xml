@@ -9,18 +9,11 @@
         <dex dex="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\build\intermediates\pre-dexed\debug\classes-51e00c902eb5a90ad2161e837e985ec617a07176.jar" />
     </item>
     <item
-        jar="C:\Users\hanaa mohamed\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\1.7.2\112366d8158749e25532ebce162232c6e0fb20a5\gson-1.7.2.jar"
+        jar="C:\Users\hanaa mohamed\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.5.2\7446d06ec8d4f7ffcc53f1da37c95f200dcb9387\picasso-2.5.2.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="112366d8158749e25532ebce162232c6e0fb20a5">
-        <dex dex="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\build\intermediates\pre-dexed\debug\gson-1.7.2-fda5eb3bddf09e57da13816b2fdc79434178f8d5.jar" />
-    </item>
-    <item
-        jar="F:\adt-bundle-windows-x86_64-20140702\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.1\support-annotations-22.2.1.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
-        <dex dex="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.1-55d47870eb1684f457f1569d57c58a8bb0ba3ded.jar" />
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\build\intermediates\pre-dexed\debug\picasso-2.5.2-b5b24a7dd4bd233e2d52a22a339ed09fffd74d60.jar" />
     </item>
     <item
         jar="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\libs\internal_impl-22.2.1.jar"
@@ -37,11 +30,18 @@
         <dex dex="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\build\intermediates\pre-dexed\debug\classes-191c1e864a5b1b91de51d9c2ae320a01ae29406d.jar" />
     </item>
     <item
-        jar="C:\Users\hanaa mohamed\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.5.2\7446d06ec8d4f7ffcc53f1da37c95f200dcb9387\picasso-2.5.2.jar"
+        jar="C:\Users\hanaa mohamed\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\1.7.2\112366d8158749e25532ebce162232c6e0fb20a5\gson-1.7.2.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
-        <dex dex="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\build\intermediates\pre-dexed\debug\picasso-2.5.2-b5b24a7dd4bd233e2d52a22a339ed09fffd74d60.jar" />
+        sha1="112366d8158749e25532ebce162232c6e0fb20a5">
+        <dex dex="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\build\intermediates\pre-dexed\debug\gson-1.7.2-fda5eb3bddf09e57da13816b2fdc79434178f8d5.jar" />
+    </item>
+    <item
+        jar="F:\adt-bundle-windows-x86_64-20140702\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.1\support-annotations-22.2.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.1-55d47870eb1684f457f1569d57c58a8bb0ba3ded.jar" />
     </item>
 
 </items>

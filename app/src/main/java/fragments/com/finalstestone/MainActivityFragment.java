@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,7 +30,6 @@ import classes.com.finalstestone.Parser;
 import classes.com.finalstestone.Response;
 import classes.com.finalstestone.httpClient;
 import classes.com.finalstestone.staticObjects;
-
 
 /**
  * A placeholder fragment containing a simple view.
@@ -87,8 +87,8 @@ public class MainActivityFragment extends Fragment {
         protected List<Response.ResultsEntity> doInBackground(String... strings) {
             List<Response.ResultsEntity> result;
             try {
-                String tweetsInfo = httpClient.GetData(strings[0]);
-                result = Parser.getData(tweetsInfo);
+                String Info = httpClient.GetData(strings[0]);
+                result = Parser.getData(Info);
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -105,9 +105,12 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void updateDisplay(List<Response.ResultsEntity> s) {
-        //  Toast.makeText(getActivity(), s.length, Toast.LENGTH_LONG).show();
-        ResponseAdapter adapter = new ResponseAdapter(getActivity(), R.layout.movie_item, s);
-        lv.setAdapter(adapter);
+        if (s==null)
+            Toast.makeText(getActivity(),"check your connection.", Toast.LENGTH_LONG).show();
+        else {
+            ResponseAdapter adapter = new ResponseAdapter(getActivity(), R.layout.movie_item, s);
+            lv.setAdapter(adapter);
+        }
 
     }
 
