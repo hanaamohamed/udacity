@@ -6,22 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
-
 import activity.com.movietesttwo.R;
-import classes.com.finalstestone.Response;
 
-/**
- * Created by hanaa mohamed on 25-Aug-15.
- */
-public class ResponseAdapter extends ArrayAdapter<Response.ResultsEntity> {
-    List<Response.ResultsEntity> resultsEntity;
+public class ResponseAdapter extends ArrayAdapter<String> {
+    List<String> resultsEntity;
     Context context;
-    public ResponseAdapter(Context context, int resource, List<Response.ResultsEntity> objects) {
+    public ResponseAdapter(Context context, int resource, List<String> objects) {
         super(context, resource, objects);
         resultsEntity = objects;
         this.context = context;
@@ -38,19 +31,15 @@ public class ResponseAdapter extends ArrayAdapter<Response.ResultsEntity> {
             viewHolder = (ViewHolderMovies) convertView.getTag();
         }
 
-        Picasso.with(context).load("https://image.tmdb.org/t/p/w185" + resultsEntity.get(position).getPoster_path()).resize(300,300).into(viewHolder.imageView);
+        Picasso.with(context).load("https://image.tmdb.org/t/p/w185" + resultsEntity.get(position)).resize(300,300).into(viewHolder.imageView);
         return convertView;
     }
 
 
     private class ViewHolderMovies {
-        TextView movieName;
         ImageView imageView;
-
         public ViewHolderMovies(View view) {
             imageView = (ImageView) view.findViewById(R.id.movie);
-
-
         }
     }
 }

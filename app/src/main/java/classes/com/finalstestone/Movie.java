@@ -2,52 +2,67 @@ package classes.com.finalstestone;
 
 
 public class Movie {
-    String name;
-    String description;
-    String category;
-    int img;
+    private String original_title;
+    private String overview;
+    private String release_date;
+    private String poster_path;
+    private String title;
+    private boolean video;
+    private double vote_average;
 
-    public Movie(String name, int img) {
-        this.name = name;
-        this.img = img;
+    public String getOriginal_title() {
+        return original_title;
     }
 
-    public Movie(String category, String description, int img, String name) {
-        this.category = category;
-        this.description = description;
-        this.img = img;
-        this.name = name;
+    public void setOriginal_title(String original_title) {
+        this.original_title = original_title;
     }
 
-    public String getCategory() {
-        return category;
+    public String getOverview() {
+        return overview;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 
-    public String getDescription() {
-        return description;
+    public String getPoster_path() {
+        return poster_path;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPoster_path(String poster_path) {
+        this.poster_path = poster_path;
     }
 
-    public int getImg() {
-        return img;
+    public String getRelease_date() {
+        return release_date;
     }
 
-    public void setImg(int img) {
-        this.img = img;
+    public void setRelease_date(String release_date) {
+        this.release_date = release_date;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public boolean isVideo() {
+        return video;
+    }
+
+    public void setVideo(boolean video) {
+        this.video = video;
+    }
+
+    public double getVote_average() {
+        return vote_average;
+    }
+
+    public void setVote_average(double vote_average) {
+        this.vote_average = vote_average;
     }
 }

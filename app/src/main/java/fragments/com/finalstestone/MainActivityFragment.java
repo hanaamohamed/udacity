@@ -20,12 +20,14 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import UI.com.finalstestone.ResponseAdapter;
 import activity.com.movietesttwo.MovieDetails;
 import activity.com.movietesttwo.R;
 import activity.com.movietesttwo.SettingsActivity;
+import classes.com.finalstestone.Movie;
 import classes.com.finalstestone.Parser;
 import classes.com.finalstestone.Response;
 import classes.com.finalstestone.httpClient;
@@ -39,6 +41,8 @@ public class MainActivityFragment extends Fragment {
     GridView lv;
     ProgressBar pb;
     SharedPreferences preferences;
+    List<Response.ResultsEntity> resultsEntities;
+    Movie movie;
 
     public MainActivityFragment() {
         setHasOptionsMenu(true);
@@ -55,7 +59,12 @@ public class MainActivityFragment extends Fragment {
         lv.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                staticObjects.resultsEntity = (Response.ResultsEntity) parent.getItemAtPosition(position);
+               // staticObjects.resultsEntity = (Response.ResultsEntity) parent.getItemAtPosition(position);
+                for (Response.ResultsEntity results : resultsEntities)
+                {
+                    if (results.getPoster_path() == parent.getItemAtPosition(position))
+                        staticObjects.resultsEntity = results;
+                }
                 Intent intent = new Intent(getActivity(), MovieDetails.class);
                 startActivity(intent);
             }
@@ -89,6 +98,7 @@ public class MainActivityFragment extends Fragment {
             try {
                 String Info = httpClient.GetData(strings[0]);
                 result = Parser.getData(Info);
+                resultsEntities = result;
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -108,7 +118,11 @@ public class MainActivityFragment extends Fragment {
         if (s==null)
             Toast.makeText(getActivity(),"check your connection.", Toast.LENGTH_LONG).show();
         else {
-            ResponseAdapter adapter = new ResponseAdapter(getActivity(), R.layout.movie_item, s);
+            ArrayList<String> imgList = new ArrayList<>();
+            for (int i=0;i<s.size();i++){
+                imgList.add(s.get(i).getPoster_path());
+            }
+            ResponseAdapter adapter = new ResponseAdapter(getActivity(), R.layout.movie_item, imgList);
             lv.setAdapter(adapter);
         }
 
