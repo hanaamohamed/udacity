@@ -30,8 +30,9 @@ public class ResponseAdapter extends ArrayAdapter<String> {
         } else {
             viewHolder = (ViewHolderMovies) convertView.getTag();
         }
+        if (resultsEntity.get(position)!=null)
+             Picasso.with(context).load("https://image.tmdb.org/t/p/w185" + resultsEntity.get(position)).resize(300,300).into(viewHolder.imageView);
 
-        Picasso.with(context).load("https://image.tmdb.org/t/p/w185" + resultsEntity.get(position)).resize(300,300).into(viewHolder.imageView);
         return convertView;
     }
 

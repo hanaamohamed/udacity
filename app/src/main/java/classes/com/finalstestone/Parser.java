@@ -1,9 +1,6 @@
 package classes.com.finalstestone;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -15,6 +12,15 @@ public class Parser {
             return response.getResults();
         }else
             return null;
+    }
+    public static List getVideos(String jsonStr){
+        if (jsonStr!=null) {
+            Gson gson = new Gson();
+            Video response = gson.fromJson(jsonStr, Video.class);
+            return response.getResults();
+        }else
+            return null;
+
     }
 
 

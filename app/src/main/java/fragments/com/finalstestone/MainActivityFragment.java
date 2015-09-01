@@ -8,7 +8,6 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,8 +26,11 @@ import UI.com.finalstestone.ResponseAdapter;
 import activity.com.movietesttwo.MovieDetails;
 import activity.com.movietesttwo.R;
 import activity.com.movietesttwo.SettingsActivity;
-import classes.com.finalstestone.Movie;
+import classes.com.finalstestone.AsyncParserResponse;
+import classes.com.finalstestone.AsyncResponse;
+import classes.com.finalstestone.ConnectionTask;
 import classes.com.finalstestone.Parser;
+import classes.com.finalstestone.ParserTask;
 import classes.com.finalstestone.Response;
 import classes.com.finalstestone.httpClient;
 import classes.com.finalstestone.staticObjects;
@@ -42,7 +44,8 @@ public class MainActivityFragment extends Fragment {
     ProgressBar pb;
     SharedPreferences preferences;
     List<Response.ResultsEntity> resultsEntities;
-    Movie movie;
+    final String[] connectionStream = new String[1];
+
 
     public MainActivityFragment() {
         setHasOptionsMenu(true);
@@ -55,7 +58,6 @@ public class MainActivityFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         pb = (ProgressBar) rootView.findViewById(R.id.progressBar);
         lv = (GridView) rootView.findViewById(R.id.list);
-        requestData();
         lv.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(android.widget.AdapterView<?> parent, View view, int position, long id) {
@@ -73,8 +75,20 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void requestData() {
+        ConnectionTask task = new ConnectionTask(new AsyncResponse() {
+            @Override
+            public void connectionTask(String output) {
+                ParserTask parserTask = new ParserTask(getActivity(), pb, 1, new AsyncParserResponse() {
+                    @Override
+                    public void parserTask(List output) {
+                        updateDisplay(output);
+                    }
+                });
+                parserTask.execute(output);
+            }
 
-        Task task = new Task();
+        }
+        );
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sortBy = preferences.getString(getString(R.string.sorting), getString(R.string.most_popular));
         if (sortBy.equals(getString(R.string.highestRated)))
@@ -84,42 +98,14 @@ public class MainActivityFragment extends Fragment {
     }
 
 
-    class Task extends AsyncTask<String, Void, List<Response.ResultsEntity>> {
-
-        @Override
-        protected void onPreExecute() {
-            pb.setVisibility(View.VISIBLE);
-            super.onPreExecute();
-        }
-
-        @Override
-        protected List<Response.ResultsEntity> doInBackground(String... strings) {
-            List<Response.ResultsEntity> result;
-            try {
-                String Info = httpClient.GetData(strings[0]);
-                result = Parser.getData(Info);
-                resultsEntities = result;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(List<Response.ResultsEntity> s) {
-            updateDisplay(s);
-            pb.setVisibility(View.INVISIBLE);
-            super.onPostExecute(s);
-        }
-    }
 
     private void updateDisplay(List<Response.ResultsEntity> s) {
         if (s==null)
             Toast.makeText(getActivity(),"check your connection.", Toast.LENGTH_LONG).show();
         else {
+            resultsEntities = s;
             ArrayList<String> imgList = new ArrayList<>();
-            for (int i=0;i<s.size();i++){
+            for (int i = 0; i < s.size(); i++) {
                 imgList.add(s.get(i).getPoster_path());
             }
             ResponseAdapter adapter = new ResponseAdapter(getActivity(), R.layout.movie_item, imgList);

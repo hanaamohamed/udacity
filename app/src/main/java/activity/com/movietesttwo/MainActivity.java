@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
 
 import fragments.com.finalstestone.FavouriteFragment;
 import fragments.com.finalstestone.MainActivityFragment;
@@ -117,4 +118,5 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             return 3;
         }
     }
+
 }
