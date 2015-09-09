@@ -17,54 +17,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3290c5f2-d468-4340-a146-7ac6dbd5a5b9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/movieApp/com/database/DatabaseSource.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/movieApp/com/UI/MovieDetailsAdapter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/movieApp/com/classes/Review.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/movieApp/com/classes/TaskParams.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/hanaa_mohamed.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/movieApp/com/UI/reviewAdapter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/review_item.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/section_item.xml" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\UI\com\finalstestone\ResponseAdapter.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\UI\com\finalstestone\VideosAdapter.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\activity\com\movietesttwo\FavouriteActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\activity\com\movietesttwo\MainActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\activity\com\movietesttwo\MovieDetails.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\activity\com\movietesttwo\SettingsActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\activity\com\movietesttwo\ToWatchList.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\classes\com\classes\AsyncParserResponse.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\classes\com\classes\AsyncResponse.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\classes\com\classes\ConnectionTask.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\classes\com\classes\Parser.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\classes\com\classes\ParserTask.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\classes\com\classes\Response.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\classes\com\classes\Video.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\classes\com\classes\httpClient.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\classes\com\classes\staticObjects.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\fragments\com\finalstestone\FavouriteFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\fragments\com\finalstestone\MainActivityFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\fragments\com\finalstestone\MovieDetailsFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\java\fragments\com\finalstestone\ToWatchListFragment.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/outputFileStates.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/outputFileStates.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MovieTestTwo.iml" afterPath="$PROJECT_DIR$/MovieTestTwo.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_favourite.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_favourite.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_movie_details.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_movie_details.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_to_watch_list.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_to_watch_list.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_favourite.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_favourite.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_movie_details.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_movie_details.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_to_watch_list.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_to_watch_list.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
+      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\res\drawable\child_divider.xml" afterPath="" />
+      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\res\drawable\child_indicator.png" afterPath="" />
+      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\res\drawable\group_collapse.png" afterPath="" />
+      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\res\drawable\group_divider.xml" afterPath="" />
+      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\res\drawable\group_expand.png" afterPath="" />
+      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\res\drawable\group_indicator.xml" afterPath="" />
+      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\res\drawable\image_test.jpg" afterPath="" />
+      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\res\drawable\list_selector_background_selected.9.png" afterPath="" />
+      <change type="DELETED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\res\drawable\text_background_selector.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MOVED" beforePath="F:\adt-bundle-windows-x86_64-20140702\eclipse\androidStudioWorkspace\MovieTestTwo\app\src\main\res\layout\header_videos.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/header_movie_list.xml" />
     </list>
     <ignored path="MovieTestTwo.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -92,32 +54,15 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MovieDetailsFragment.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MovieDetailsFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/movieApp/com/fragments/MovieDetailsFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3068592">
-              <caret line="146" column="55" selection-start-line="146" selection-start-column="55" selection-end-line="146" selection-end-column="55" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="162" column="5" selection-start-line="162" selection-start-column="5" selection-end-line="162" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2586#3173#0" expanded="true" />
                 <element signature="e#3172#3173#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="header_movie_list.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/header_movie_list.xml">
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.965517">
-              <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
-              <folding>
-                <element signature="e#684#719#0" expanded="true" />
-                <element signature="e#1141#1186#0" expanded="true" />
-                <element signature="e#1214#1249#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -160,13 +105,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="review_item.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="review_item.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/review_item.xml">
           <provider editor-type-id="android-designer">
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.3448277">
+            <state vertical-scroll-proportion="0.12830189">
               <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
               <folding />
             </state>
@@ -2414,7 +2359,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.318569" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2423,15 +2368,15 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39863715" sideWeight="0.5030257" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20196672" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20196672" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43270868" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36286202" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32879046" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.48040885" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.48040885" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25567323" sideWeight="0.4907162" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25567323" sideWeight="0.4907162" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3270869" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -2823,17 +2768,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/review_item.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.3448277">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/movieApp/com/classes/Parser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.60465115">
@@ -2852,6 +2786,33 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/header_movie_list.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3264151">
+          <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+          <folding>
+            <element signature="e#684#719#0" expanded="true" />
+            <element signature="e#1141#1186#0" expanded="true" />
+            <element signature="e#1214#1249#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/movieApp/com/fragments/MovieDetailsFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="162" column="5" selection-start-line="162" selection-start-column="5" selection-end-line="162" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2586#3173#0" expanded="true" />
+            <element signature="e#3172#3173#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/section_item.xml">
       <provider selected="true" editor-type-id="android-designer">
         <state />
@@ -2860,21 +2821,6 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/header_movie_list.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.965517">
-          <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
-          <folding>
-            <element signature="e#684#719#0" expanded="true" />
-            <element signature="e#1141#1186#0" expanded="true" />
-            <element signature="e#1214#1249#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2900,15 +2846,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/movieApp/com/fragments/MovieDetailsFragment.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/review_item.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3068592">
-          <caret line="146" column="55" selection-start-line="146" selection-start-column="55" selection-end-line="146" selection-end-column="55" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2586#3173#0" expanded="true" />
-            <element signature="e#3172#3173#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.12830189">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
