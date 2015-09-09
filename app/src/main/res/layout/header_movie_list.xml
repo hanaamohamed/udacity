@@ -93,18 +93,5 @@
         android:layout_margin="@dimen/abc_action_bar_content_inset_material"
         android:text="" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/abc_action_bar_content_inset_material"
-        android:src="@drawable/group_divider" />
-
-   <!-- <TextView
-        android:id="@+id/type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/abc_action_bar_content_inset_material"
-        android:text="Trailer" />-->
-
 
 </LinearLayout>
