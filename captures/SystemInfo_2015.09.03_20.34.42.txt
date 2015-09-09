@@ -1,0 +1,44 @@
+Activity Resolver Table:
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        b1386510 activity.com.movietesttwo/movieApp.com.activity.MainActivity filter b1386648
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+
+Registered ContentProviders:
+  activity.com.movietesttwo/movieApp.com.database.MoviesProvider:
+    Provider{b137a1a0 activity.com.movietesttwo/movieApp.com.database.MoviesProvider}
+
+ContentProvider Authorities:
+  [activity.com.movietesttwo]:
+    Provider{b137a1a0 activity.com.movietesttwo/movieApp.com.database.MoviesProvider}
+      applicationInfo=ApplicationInfo{b14391b0 activity.com.movietesttwo}
+
+Key Set Manager:
+  [activity.com.movietesttwo]
+      Signing KeySets: 1
+
+Packages:
+  Package [activity.com.movietesttwo] (b10ce748):
+    userId=10058 gids=[3003, 1028, 1015]
+    pkg=Package{b1439100 activity.com.movietesttwo}
+    codePath=/data/app/activity.com.movietesttwo-2.apk
+    resourcePath=/data/app/activity.com.movietesttwo-2.apk
+    nativeLibraryPath=/data/app-lib/activity.com.movietesttwo-2
+    versionCode=1 targetSdk=22
+    versionName=1.0
+    applicationInfo=ApplicationInfo{b14391b0 activity.com.movietesttwo}
+    flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+    dataDir=/data/data/activity.com.movietesttwo
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    timeStamp=2015-09-03 13:31:32
+    firstInstallTime=2015-09-02 13:27:04
+    lastUpdateTime=2015-09-03 13:31:32
+    signatures=PackageSignatures{b10ce810 [b10cf620]}
+    permissionsFixed=true haveGids=true installStatus=1
+    pkgFlags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+    User 0:  installed=true blocked=false stopped=false notLaunched=false enabled=0
+    grantedPermissions:
+      android.permission.READ_EXTERNAL_STORAGE
+      android.permission.WRITE_EXTERNAL_STORAGE
+      android.permission.INTERNET

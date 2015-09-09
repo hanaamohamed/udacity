@@ -11,7 +11,7 @@
 
         <fragment
             android:id="@+id/fragment"
-            android:name="fragments.com.finalstestone.MainActivityFragment"
+            android:name="movieApp.com.fragments.MainActivityFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:layout="@layout/fragment_main" />

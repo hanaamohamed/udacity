@@ -1,0 +1,110 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context="fragments.MovieDetailsFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/accent_material_dark"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="Movie name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/abc_primary_text_material_dark"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingRight="@dimen/abc_button_inset_horizontal_material"
+        android:paddingTop="@dimen/activity_horizontal_margin"
+        android:weightSum="3">
+
+        <ImageView
+            android:id="@+id/poster"
+            android:layout_width="140dp"
+            android:layout_height="200dp"
+            android:layout_weight="1"
+            android:src="@android:drawable/alert_dark_frame"
+            android:contentDescription="" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text="Year"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/button_material_dark"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/min"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text="min"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/button_material_dark"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text="0/10"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/fav"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/abc_action_bar_icon_vertical_padding_material"
+                android:background="@color/highlighted_text_material_dark"
+                android:text="MARK AS FAVOURITE"
+                android:textColor="@color/button_material_dark" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/des"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/abc_action_bar_content_inset_material"
+        android:text="" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/abc_action_bar_content_inset_material"
+        android:src="@drawable/group_divider" />
+
+   <!-- <TextView
+        android:id="@+id/type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/abc_action_bar_content_inset_material"
+        android:text="Trailer" />-->
+
+
+</LinearLayout>
