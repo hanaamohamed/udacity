@@ -71,7 +71,7 @@ public class MovieDetailsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ViewHolder viewHolder = null;
+        ViewHolder viewHolder ;
         int type = getItemViewType(position);
         if (convertView == null) {
             viewHolder = new ViewHolder();

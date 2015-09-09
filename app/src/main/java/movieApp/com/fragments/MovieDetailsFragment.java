@@ -144,11 +144,9 @@ public class MovieDetailsFragment extends Fragment {
 
         }
         );
-        String urlVideos = "http://api.themoviedb.org/3/movie/" + id + "/videos?api_key=04db6a4e0e321dd1bec24ff22c995709";
-        String urlReviews = "http://api.themoviedb.org/3/movie/"+id+"/reviews?api_key=04db6a4e0e321dd1bec24ff22c995709";
+        String urlVideos  = "http://api.themoviedb.org/3/movie/" + id + "/videos?api_key=04db6a4e0e321dd1bec24ff22c995709";
+        String urlReviews = "http://api.themoviedb.org/3/movie/" + id + "/reviews?api_key=04db6a4e0e321dd1bec24ff22c995709";
         task.execute(urlVideos, urlReviews);
-
-
     }
 
     private int formatDate(String s) throws ParseException {
