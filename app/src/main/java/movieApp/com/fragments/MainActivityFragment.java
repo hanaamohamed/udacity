@@ -1,13 +1,9 @@
 package movieApp.com.fragments;
 
 import android.annotation.TargetApi;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -27,9 +23,7 @@ import java.util.List;
 
 import movieApp.com.classes.AsyncParserResponse;
 import movieApp.com.classes.TaskParams;
-import movieApp.com.database.Contract;
 import movieApp.com.database.DatabaseSource;
-import movieApp.com.database.MoviesProvider;
 import movieApp.com.activity.MovieDetails;
 import activity.com.movietesttwo.movieApp.com.R;
 import movieApp.com.activity.SettingsActivity;
@@ -49,7 +43,6 @@ public class MainActivityFragment extends Fragment {
     ProgressBar pb;
     SharedPreferences preferences;
     List<Response.ResultsEntity> resultsEntities;
-    final String[] connectionStream = new String[1];
 
 
     public MainActivityFragment() {
@@ -72,7 +65,7 @@ public class MainActivityFragment extends Fragment {
                         staticObjects.resultsEntity = results;
                 }
                 Intent intent = new Intent(getActivity(), MovieDetails.class);
-               // intent.putExtra("object", (Parcelable) resultsEntities);
+                // intent.putExtra("object", (Parcelable) resultsEntities);
                 startActivity(intent);
             }
         });
@@ -89,7 +82,7 @@ public class MainActivityFragment extends Fragment {
                         updateDisplay(output);
                     }
                 });
-                TaskParams taskParams = new TaskParams(output,null,null);
+                TaskParams taskParams = new TaskParams(output, null, null);
                 parserTask.execute(taskParams);
             }
 
@@ -114,9 +107,7 @@ public class MainActivityFragment extends Fragment {
         resultsEntities = s;
         ArrayList<String> imgList = new ArrayList<>();
         for (int i = 0; i < s.size(); i++) imgList.add(s.get(i).getPoster_path());
-
-        Toast.makeText(getActivity(), databaseSource.fillContentValues(s) + "",
-                Toast.LENGTH_LONG).show();
+        databaseSource.fillContentValues(s);
         ResponseAdapter adapter = new ResponseAdapter(getActivity(), R.layout.movie_item, imgList);
         lv.setAdapter(adapter);
     }

@@ -1,9 +1,9 @@
 package movieApp.com.fragments;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
+import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +40,7 @@ import movieApp.com.classes.Video;
 import movieApp.com.classes.staticObjects;
 import movieApp.com.database.DatabaseSource;
 
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -54,7 +55,6 @@ public class MovieDetailsFragment extends Fragment {
     View root, header;
     ListView list;
     ProgressBar pb;
-    String url;
 
     Response.ResultsEntity resultsEntity;
 
@@ -72,8 +72,6 @@ public class MovieDetailsFragment extends Fragment {
         // resultsEntity = bundle.getParcelable("object");
         final DatabaseSource source = new DatabaseSource(getActivity());
         final int check = source.isFavourite(resultsEntity.getId());
-        Toast.makeText(getActivity(), String.valueOf(check), Toast.LENGTH_SHORT).show();
-
         if (check == 1)
             favourite.setBackgroundColor(Color.rgb(198, 226, 255));
         else
@@ -100,6 +98,12 @@ public class MovieDetailsFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (parent.getItemAtPosition(position) instanceof Video.ResultsEntity){
+                    Video.ResultsEntity video = (Video.ResultsEntity) parent.getItemAtPosition(position);
+                    Uri uri = Uri.parse("http://www."+video.getSite()+".com/watch?v="+video.getKey());
+                    Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                    startActivity(intent);
+                }
 
             }
         });
@@ -112,7 +116,7 @@ public class MovieDetailsFragment extends Fragment {
         description.setText(obj.getOverview());
         rate.setText(obj.getVote_average() + "/10");
         Picasso.with(getActivity()).load("https://image.tmdb.org/t/p/w185" + obj.getPoster_path()).resize(150, 200).into(poster);
-        if (obj.getRelease_date() != null) {
+        if (!obj.getRelease_date().isEmpty()) {
             String date_obj = obj.getRelease_date() + " 00:00:00.0";
             int date = formatDate(date_obj);
             year.setText(date + "");
@@ -122,7 +126,6 @@ public class MovieDetailsFragment extends Fragment {
         retrieveData(obj.getId());
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void retrieveData(int id) {
         ConnectionTask task = new ConnectionTask(new AsyncResponse() {
             @Override

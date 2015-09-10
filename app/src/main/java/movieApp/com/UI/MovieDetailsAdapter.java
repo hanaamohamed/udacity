@@ -96,7 +96,7 @@ public class MovieDetailsAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         if (type == TRAILER_TYPE) {
             Video.ResultsEntity video = (Video.ResultsEntity) combinedObjects.get(position);
-            viewHolder.textView.setText(video.getType());
+            viewHolder.textView.setText(video.getName());
         }
         if (type == REVIEW_TYPE) {
             Review.ResultsEntity reviews = (Review.ResultsEntity) combinedObjects.get(position);
