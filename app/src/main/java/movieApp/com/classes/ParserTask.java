@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ParserTask extends AsyncTask<TaskParams, Void, HashMap> {
+public class ParserTask extends AsyncTask<String, Void, HashMap> {
 
     Context context;
     ProgressBar pb;
@@ -33,21 +33,21 @@ public class ParserTask extends AsyncTask<TaskParams, Void, HashMap> {
     }
 
     @Override
-    protected HashMap doInBackground(TaskParams... params) {
+    protected HashMap doInBackground(String... params) {
         String[] keys = new String[]{"videos", "reviews", "movies"};
         HashMap<String, List> hashMap = new HashMap<>();
         switch (typeParser) {
             case 1:
                 List<Response.ResultsEntity> resultMovies;
-                resultMovies = Parser.getData(params[0].urlMovie);
+                resultMovies = Parser.getData(params[0]);
                 hashMap.put(keys[2], resultMovies);
                 return hashMap;
             case 2:
                 List resultVideos;
-                resultVideos = Parser.getVideos(params[0].urlVideo);
+                resultVideos = Parser.getVideos(params[0]);
                 hashMap.put(keys[0], resultVideos);
                 List resultReviews;
-                resultReviews = Parser.getReviews(params[0].urlReview);
+                resultReviews = Parser.getReviews(params[1]);
                 hashMap.put(keys[1], resultReviews);
                 return hashMap;
             default:

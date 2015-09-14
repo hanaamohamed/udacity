@@ -88,7 +88,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 default:
                     return null;
             }
-           // return  MainActivityFragment.newInstance(position+1);
         }
 
         @Override

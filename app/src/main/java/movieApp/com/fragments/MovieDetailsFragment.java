@@ -35,9 +35,7 @@ import movieApp.com.classes.ConnectionTask;
 import movieApp.com.classes.ParserTask;
 import movieApp.com.classes.Response;
 import movieApp.com.classes.Review;
-import movieApp.com.classes.TaskParams;
 import movieApp.com.classes.Video;
-import movieApp.com.classes.staticObjects;
 import movieApp.com.database.DatabaseSource;
 
 
@@ -67,9 +65,9 @@ public class MovieDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_movie_details, container, false);
         header = inflater.inflate(R.layout.header_movie_list, container, false);
+        Bundle bundle = getActivity().getIntent().getExtras();
+        resultsEntity = bundle.getParcelable("movieApp.com.classes.Response.ResultsEntity");
         init();
-        //Bundle bundle = getActivity().getIntent().getExtras();
-        // resultsEntity = bundle.getParcelable("object");
         final DatabaseSource source = new DatabaseSource(getActivity());
         final int check = source.isFavourite(resultsEntity.getId());
         if (check == 1)
@@ -90,7 +88,7 @@ public class MovieDetailsFragment extends Fragment {
             }
         });
         try {
-            setData(staticObjects.resultsEntity);
+            setData(resultsEntity);
         } catch (ParseException e) {
             Log.e("DATE", "error", e);
         }
@@ -129,20 +127,16 @@ public class MovieDetailsFragment extends Fragment {
     private void retrieveData(int id) {
         ConnectionTask task = new ConnectionTask(new AsyncResponse() {
             @Override
-            public void connectionTask(String output) {
-                String videos = null, reviews = null;
-                if (output.contains("@/")) {
-                    String[] strings = output.split("@/");
-                    videos = strings[0];
-                    reviews = strings[1];
-                }
+            public void connectionTask(HashMap output) {
+                String videos = (String) output.get("firstConnection");
+                String reviews = (String) output.get("secondConnection");
                 ParserTask parserTask = new ParserTask(getActivity(), pb, 2, new AsyncParserResponse() {
                     @Override
                     public void parserTask(HashMap output) {
                         updateDisplay(output);
                     }
                 });
-                parserTask.execute(new TaskParams(null, reviews, videos));
+                parserTask.execute(videos,reviews);
             }
 
         }
@@ -170,8 +164,6 @@ public class MovieDetailsFragment extends Fragment {
         favourite = (Button) header.findViewById(R.id.fav);
         list = (ListView) root.findViewById(R.id.trailerList);
         pb = (ProgressBar) root.findViewById(R.id.progressBar);
-        resultsEntity = staticObjects.resultsEntity;
-
     }
 
     private void updateDisplay(HashMap hashMap) {

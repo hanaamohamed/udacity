@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import movieApp.com.classes.AsyncParserResponse;
-import movieApp.com.classes.TaskParams;
 import movieApp.com.database.DatabaseSource;
 import movieApp.com.activity.MovieDetails;
 import activity.com.movietesttwo.movieApp.com.R;
@@ -32,7 +31,6 @@ import movieApp.com.classes.AsyncResponse;
 import movieApp.com.classes.ConnectionTask;
 import movieApp.com.classes.ParserTask;
 import movieApp.com.classes.Response;
-import movieApp.com.classes.staticObjects;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -59,14 +57,14 @@ public class MainActivityFragment extends Fragment {
         lv.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                // staticObjects.resultsEntity = (Response.ResultsEntity) parent.getItemAtPosition(position);
                 for (Response.ResultsEntity results : resultsEntities) {
-                    if (results.getPoster_path() == parent.getItemAtPosition(position))
-                        staticObjects.resultsEntity = results;
+                    if (results.getPoster_path() == parent.getItemAtPosition(position)) {
+                        Intent intent = new Intent(getActivity(), MovieDetails.class);
+                        intent.putExtra("movieApp.com.classes.Response.ResultsEntity",results);
+                        startActivity(intent);
+                    }
                 }
-                Intent intent = new Intent(getActivity(), MovieDetails.class);
-                // intent.putExtra("object", (Parcelable) resultsEntities);
-                startActivity(intent);
+
             }
         });
         return rootView;
@@ -75,15 +73,15 @@ public class MainActivityFragment extends Fragment {
     private void requestData() {
         ConnectionTask task = new ConnectionTask(new AsyncResponse() {
             @Override
-            public void connectionTask(String output) {
+            public void connectionTask(HashMap output) {
                 ParserTask parserTask = new ParserTask(getActivity(), pb, 1, new AsyncParserResponse() {
                     @Override
                     public void parserTask(HashMap output) {
                         updateDisplay(output);
                     }
                 });
-                TaskParams taskParams = new TaskParams(output, null, null);
-                parserTask.execute(taskParams);
+                String connection = (String) output.get("firstConnection");
+                parserTask.execute(connection);
             }
 
         }
