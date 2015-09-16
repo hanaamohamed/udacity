@@ -66,29 +66,32 @@ public class MovieDetailsFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_movie_details, container, false);
         header = inflater.inflate(R.layout.header_movie_list, container, false);
         Bundle bundle = getActivity().getIntent().getExtras();
-        resultsEntity = bundle.getParcelable("movieApp.com.classes.Response.ResultsEntity");
+        if (bundle != null)
+            resultsEntity = bundle.getParcelable("movieApp.com.classes.Response.ResultsEntity");
         init();
-        final DatabaseSource source = new DatabaseSource(getActivity());
-        final int check = source.isFavourite(resultsEntity.getId());
-        if (check == 1)
-            favourite.setBackgroundColor(Color.rgb(198, 226, 255));
-        else
-            favourite.setBackgroundColor(Color.LTGRAY);
+        if (resultsEntity != null) {
+            final DatabaseSource source = new DatabaseSource(getActivity());
+            final int check = source.isFavourite(resultsEntity.getId());
+            if (check == 1)
+                favourite.setBackgroundColor(Color.rgb(198, 226, 255));
+            else
+                favourite.setBackgroundColor(Color.LTGRAY);
 
-        favourite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (check == 1) {
-                    Toast.makeText(getActivity(), source.favourite(resultsEntity.getId(), 0) + "", Toast.LENGTH_SHORT).show();
-                    favourite.setBackgroundColor(Color.LTGRAY);
-                } else {
-                    Toast.makeText(getActivity(), source.favourite(resultsEntity.getId(), 1) + "", Toast.LENGTH_SHORT).show();
-                    favourite.setBackgroundColor(Color.rgb(198, 226, 255));
+            favourite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (check == 1) {
+                        Toast.makeText(getActivity(), source.favourite(resultsEntity.getId(), 0) + "", Toast.LENGTH_SHORT).show();
+                        favourite.setBackgroundColor(Color.LTGRAY);
+                    } else {
+                        Toast.makeText(getActivity(), source.favourite(resultsEntity.getId(), 1) + "", Toast.LENGTH_SHORT).show();
+                        favourite.setBackgroundColor(Color.rgb(198, 226, 255));
+                    }
                 }
-            }
-        });
+            });
+        }
         try {
-            setData(resultsEntity);
+            setData();
         } catch (ParseException e) {
             Log.e("DATE", "error", e);
         }
@@ -96,10 +99,10 @@ public class MovieDetailsFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (parent.getItemAtPosition(position) instanceof Video.ResultsEntity){
+                if (parent.getItemAtPosition(position) instanceof Video.ResultsEntity) {
                     Video.ResultsEntity video = (Video.ResultsEntity) parent.getItemAtPosition(position);
-                    Uri uri = Uri.parse("http://www."+video.getSite()+".com/watch?v="+video.getKey());
-                    Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                    Uri uri = Uri.parse("http://www." + video.getSite() + ".com/watch?v=" + video.getKey());
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
                 }
 
@@ -109,19 +112,21 @@ public class MovieDetailsFragment extends Fragment {
         return root;
     }
 
-    private void setData(Response.ResultsEntity obj) throws ParseException {
-        title.setText(obj.getOriginal_title());
-        description.setText(obj.getOverview());
-        rate.setText(obj.getVote_average() + "/10");
-        Picasso.with(getActivity()).load("https://image.tmdb.org/t/p/w185" + obj.getPoster_path()).resize(150, 200).into(poster);
-        if (!obj.getRelease_date().isEmpty()) {
-            String date_obj = obj.getRelease_date() + " 00:00:00.0";
-            int date = formatDate(date_obj);
-            year.setText(date + "");
-            resultsEntity.setRelease_date(date + "");
-        } else
-            year.setText("N/A");
-        retrieveData(obj.getId());
+    private void setData() throws ParseException {
+        if (resultsEntity != null) {
+            title.setText(resultsEntity.getOriginal_title());
+            description.setText(resultsEntity.getOverview());
+            rate.setText(resultsEntity.getVote_average() + "/10");
+            Picasso.with(getActivity()).load("https://image.tmdb.org/t/p/w185" + resultsEntity.getPoster_path()).resize(150, 200).into(poster);
+            if (!resultsEntity.getRelease_date().isEmpty()) {
+                String date_obj = resultsEntity.getRelease_date() + " 00:00:00.0";
+                int date = formatDate(date_obj);
+                year.setText(date + "");
+                resultsEntity.setRelease_date(date + "");
+            } else
+                year.setText("N/A");
+            retrieveData(resultsEntity.getId());
+        }
     }
 
     private void retrieveData(int id) {
@@ -136,12 +141,12 @@ public class MovieDetailsFragment extends Fragment {
                         updateDisplay(output);
                     }
                 });
-                parserTask.execute(videos,reviews);
+                parserTask.execute(videos, reviews);
             }
 
         }
         );
-        String urlVideos  = "http://api.themoviedb.org/3/movie/" + id + "/videos?api_key=04db6a4e0e321dd1bec24ff22c995709";
+        String urlVideos = "http://api.themoviedb.org/3/movie/" + id + "/videos?api_key=04db6a4e0e321dd1bec24ff22c995709";
         String urlReviews = "http://api.themoviedb.org/3/movie/" + id + "/reviews?api_key=04db6a4e0e321dd1bec24ff22c995709";
         task.execute(urlVideos, urlReviews);
     }

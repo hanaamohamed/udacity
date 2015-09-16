@@ -67,6 +67,7 @@ public class MainActivityFragment extends Fragment {
 
             }
         });
+        requestData();
         return rootView;
     }
 

@@ -12,30 +12,29 @@ import android.support.v4.view.ViewPager;
 import activity.com.movietesttwo.movieApp.com.R;
 import movieApp.com.fragments.FavouriteFragment;
 import movieApp.com.fragments.MainActivityFragment;
+import movieApp.com.fragments.MovieDetailsFragment;
 
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 
-    ViewPager pager ;
+    ViewPager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Boolean twoPane = false;
+        if (findViewById(R.id.fragmentDetails) != null) {
+            if (savedInstanceState == null)
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentDetails, new MovieDetailsFragment())
+                        .addToBackStack("MoviesDetails").commit();
+            twoPane = true;
+        }
         pager = (ViewPager) findViewById(R.id.pager);
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        ActionBar.Tab tab1 = actionBar.newTab();
-        tab1.setText("Home");
-        tab1.setTabListener(this);
-        actionBar.addTab(tab1);
-
-        ActionBar.Tab tab2 = actionBar.newTab();
-        tab2.setText("Favourites");
-        tab2.setTabListener(this);
-        actionBar.addTab(tab2);
-
+        setActionBar(actionBar);
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
         pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -56,11 +55,27 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             }
         });
 
+
+    }
+
+    private void setActionBar(ActionBar actionBar) {
+
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        ActionBar.Tab tab1 = actionBar.newTab();
+        tab1.setText("Home");
+        tab1.setTabListener(this);
+
+        actionBar.addTab(tab1);
+
+        ActionBar.Tab tab2 = actionBar.newTab();
+        tab2.setText("Favourites");
+        tab2.setTabListener(this);
+        actionBar.addTab(tab2);
     }
 
     @Override
-    public void onTabSelected(ActionBar.Tab tab,FragmentTransaction ft) {
-         pager.setCurrentItem(tab.getPosition());
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+        pager.setCurrentItem(tab.getPosition());
     }
 
     @Override
@@ -73,14 +88,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     }
 
-    private class FragmentAdapter extends FragmentPagerAdapter{
+    private class FragmentAdapter extends FragmentPagerAdapter {
         public FragmentAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
-            switch (position){
+            switch (position) {
                 case 0:
                     return new MainActivityFragment();
                 case 1:
@@ -92,7 +107,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position){
+            switch (position) {
                 case 0:
                     return getString(R.string.home);
                 case 1:
