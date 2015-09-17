@@ -23,8 +23,12 @@ public class DatabaseSource {
                 new String[]{resultsEntity.getId() + ""});
     }
 
-    public boolean fillContentValues(List<Response.ResultsEntity> resultsEntities) {
+
+
+    public boolean insertAll(List<Response.ResultsEntity> resultsEntities) {
         boolean check = false;
+        ContentValues[] contentValues = new ContentValues[resultsEntities.size()];
+        int i = 0;
         for (Response.ResultsEntity resultsEntity : resultsEntities) {
             if (isExist(resultsEntity.getId()) == -1) {
                 ContentValues values = new ContentValues();
@@ -35,15 +39,15 @@ public class DatabaseSource {
                 values.put(Contract.Movies.FAVOURITE, 0);
                 values.put(Contract.Movies.MOVIE_RATE, resultsEntity.getVote_average());
                 values.put(Contract.Movies.MOVIE_POSTER_PATH, resultsEntity.getPoster_path());
-                long id = Long.parseLong(context.getContentResolver().insert(Contract.Movies.CONTENT_MOVIES_URI,values).getPathSegments().get(1));
-                if (id>0)
-                    check = true;
-            } else
-                break;
+                contentValues[i++] = values;
+                //long id = Long.parseLong(context.getContentResolver().insert(Contract.Movies.CONTENT_MOVIES_URI,values).getPathSegments().get(1));
+            }
         }
+        long id = context.getContentResolver().bulkInsert(Contract.Movies.CONTENT_MOVIES_URI, contentValues);
+        if (id > 0)
+            check = true;
         return check;
     }
-
 
 
     public long isExist(int _id) {
@@ -61,6 +65,7 @@ public class DatabaseSource {
             } else
                 id = -1;
         } finally {
+            assert cursor != null;
             cursor.close();
 
         }
@@ -74,10 +79,10 @@ public class DatabaseSource {
         return context.getContentResolver().update(uri, values, null, new String[]{String.valueOf(id)});
     }
 
-   public ArrayList<Response.ResultsEntity> retrieveFav() {
+    public ArrayList<Response.ResultsEntity> retrieveFav() {
         ArrayList<Response.ResultsEntity> resultsEntities = new ArrayList<>();
         Uri uri = Contract.Movies.CONTENT_MOVIES_URI.buildUpon().appendPath("0").appendPath("1").build();
-        Cursor cursor = context.getContentResolver().query(uri,null, null, null, null);
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
         try {
             if (cursor.moveToFirst()) {
                 while (cursor.moveToNext()) {
@@ -102,7 +107,7 @@ public class DatabaseSource {
     public ArrayList<Response.ResultsEntity> allMovies() {
         ArrayList<Response.ResultsEntity> resultsEntities = new ArrayList<>();
         Uri uri = Contract.Movies.CONTENT_MOVIES_URI;
-        Cursor cursor = context.getContentResolver().query(uri,Contract.Movies.AllColumns, null, null, null);
+        Cursor cursor = context.getContentResolver().query(uri, Contract.Movies.AllColumns, null, null, null);
         try {
             if (cursor.moveToFirst()) {
                 while (cursor.moveToNext()) {
@@ -123,18 +128,18 @@ public class DatabaseSource {
         return resultsEntities;
     }
 
-    public int isFavourite(long id){
+    public int isFavourite(long id) {
         int checked = 0;
         Uri uri = Contract.Movies.CONTENT_MOVIES_URI.buildUpon().appendPath(String.valueOf(id)).build();
-        Cursor cursor = context.getContentResolver().query(uri,new String[]{Contract.Movies.FAVOURITE}, null,new String[]{String.valueOf(id)},null);
+        Cursor cursor = context.getContentResolver().query(uri, new String[]{Contract.Movies.FAVOURITE}, null, new String[]{String.valueOf(id)}, null);
 
-       try {
-           if (cursor.moveToFirst()){
-               checked = cursor.getInt(cursor.getColumnIndex(Contract.Movies.FAVOURITE));
-           }
-       }finally {
-           cursor.close();
-       }
+        try {
+            if (cursor.moveToFirst()) {
+                checked = cursor.getInt(cursor.getColumnIndex(Contract.Movies.FAVOURITE));
+            }
+        } finally {
+            cursor.close();
+        }
         return checked;
     }
 }

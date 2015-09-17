@@ -5,13 +5,11 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-/**
- * Created by hanaa mohamed on 02-Sep-15.
- */
+
 public class MoviesProvider extends ContentProvider {
 
     private static final int AllMovies = 1;
@@ -34,9 +32,7 @@ public class MoviesProvider extends ContentProvider {
     public boolean onCreate() {
         moviesOpenHelper = new MoviesOpenHelper(getContext());
         dbHelper = moviesOpenHelper.getWritableDatabase();
-        if (dbHelper != null)
-            return true;
-        return false;
+        return dbHelper != null;
     }
 
     @Override
@@ -135,7 +131,7 @@ public class MoviesProvider extends ContentProvider {
     }
 
     @Override
-    public int bulkInsert(Uri uri, ContentValues[] values) {
+    public int bulkInsert(Uri uri, @NonNull ContentValues[] values) {
         int id = -1;
         try {
             dbHelper.beginTransaction();
@@ -148,6 +144,7 @@ public class MoviesProvider extends ContentProvider {
                     }
                 }
             }
+            dbHelper.setTransactionSuccessful();
         } catch (Exception e) {
             Log.e(TAG, "error", e);
         } finally {

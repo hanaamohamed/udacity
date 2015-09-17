@@ -17,6 +17,7 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,13 +36,13 @@ import movieApp.com.classes.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+public class MainActivityFragment extends Fragment{
 
-    GridView lv;
+    GridView gridView;
     ProgressBar pb;
     SharedPreferences preferences;
     List<Response.ResultsEntity> resultsEntities;
-
 
     public MainActivityFragment() {
         setHasOptionsMenu(true);
@@ -53,14 +54,14 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         pb = (ProgressBar) rootView.findViewById(R.id.progressBar);
-        lv = (GridView) rootView.findViewById(R.id.list);
-        lv.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+        gridView = (GridView) rootView.findViewById(R.id.list);
+        gridView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(android.widget.AdapterView<?> parent, View view, int position, long id) {
                 for (Response.ResultsEntity results : resultsEntities) {
                     if (results.getPoster_path() == parent.getItemAtPosition(position)) {
                         Intent intent = new Intent(getActivity(), MovieDetails.class);
-                        intent.putExtra("movieApp.com.classes.Response.ResultsEntity",results);
+                        intent.putExtra("movieApp.com.classes.Response.ResultsEntity", results);
                         startActivity(intent);
                     }
                 }
@@ -102,13 +103,14 @@ public class MainActivityFragment extends Fragment {
         if (s == null) {
             Toast.makeText(getActivity(), "check your connection.", Toast.LENGTH_LONG).show();
             s = databaseSource.allMovies();
+        } else {
+            resultsEntities = s;
+            ArrayList<String> imgList = new ArrayList<>();
+            for (int i = 0; i < s.size(); i++) imgList.add(s.get(i).getPoster_path());
+            databaseSource.insertAll(s);
+            ResponseAdapter adapter = new ResponseAdapter(getActivity(), R.layout.movie_item, imgList);
+            gridView.setAdapter(adapter);
         }
-        resultsEntities = s;
-        ArrayList<String> imgList = new ArrayList<>();
-        for (int i = 0; i < s.size(); i++) imgList.add(s.get(i).getPoster_path());
-        databaseSource.fillContentValues(s);
-        ResponseAdapter adapter = new ResponseAdapter(getActivity(), R.layout.movie_item, imgList);
-        lv.setAdapter(adapter);
     }
 
 
@@ -130,7 +132,6 @@ public class MainActivityFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
-
     @Override
     public void onResume() {
         super.onResume();

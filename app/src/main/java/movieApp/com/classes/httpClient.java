@@ -15,6 +15,8 @@ import android.util.Log;
 
 public class httpClient {
 	static String TAG = "CONNECTION";
+
+
 	public static String GetData(String uri) throws IOException {
 		BufferedReader input = null;
 

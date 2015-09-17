@@ -18,7 +18,7 @@ public class Contract {
         public static String MOVIE_DIR = ContentResolver.CURSOR_DIR_BASE_TYPE + CONTENT_BASE + "/" + MOVIES_PATH + "/";
 
         public static String TableName = "movies";
-        public static String ID = "id";
+        public static String ID = "_id";
         public static String MOVIE_iD = "movie_id";
         public static String MOVIE_TITLE = "title";
         public static String MOVIE_DATE = "date";
@@ -27,12 +27,13 @@ public class Contract {
         public static String MOVIE_OVERVIEW = "overview";
         public static String FAVOURITE = "favourite";
         public static String[] AllColumns = new String[]{
-                Contract.Movies.MOVIE_iD,
-                Contract.Movies.MOVIE_TITLE,
-                Contract.Movies.MOVIE_OVERVIEW,
-                Contract.Movies.MOVIE_POSTER_PATH,
-                Contract.Movies.MOVIE_DATE,
-                Contract.Movies.MOVIE_RATE
+                Movies._ID,
+                MOVIE_iD,
+                MOVIE_TITLE,
+                MOVIE_OVERVIEW,
+                MOVIE_POSTER_PATH,
+                MOVIE_DATE,
+                MOVIE_RATE
         };
 
         public static Uri buildMovieID(long id) {

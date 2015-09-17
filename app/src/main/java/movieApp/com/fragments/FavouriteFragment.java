@@ -1,5 +1,12 @@
 package movieApp.com.fragments;
 
+import android.annotation.TargetApi;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,16 +18,20 @@ import java.util.ArrayList;
 
 import activity.com.movietesttwo.movieApp.com.R;
 import movieApp.com.UI.ResponseAdapter;
+import movieApp.com.UI.cursorAdapter;
 import movieApp.com.classes.Response;
+import movieApp.com.database.Contract;
 import movieApp.com.database.DatabaseSource;
 
 
-/**
- * A placeholder fragment containing a simple view.
- */
-public class FavouriteFragment extends Fragment {
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+public class FavouriteFragment extends Fragment implements LoaderCallbacks<Cursor> {
+    private static final int ID = 0;
     ArrayList<Response.ResultsEntity> resultsEntities;
     GridView gridView;
+    private cursorAdapter mCursorAdapter;
+
+
     public FavouriteFragment() {
         setHasOptionsMenu(true);
     }
@@ -30,7 +41,8 @@ public class FavouriteFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root= inflater.inflate(R.layout.fragment_favourite, container, false);
         gridView = (GridView) root.findViewById(R.id.movies);
-        retrieveFavourites();
+        // retrieveFavourites();
+       // gridView.setAdapter(mCursorAdapter);
         return  root;
     }
    void retrieveFavourites(){
@@ -47,6 +59,31 @@ public class FavouriteFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        retrieveFavourites();
+       // retrieveFavourites();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(ID,savedInstanceState,this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri uri = Contract.Movies.CONTENT_MOVIES_URI.buildUpon().appendPath("0").appendPath("1").build();
+        return new CursorLoader(getActivity(),uri,null,null,null,null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mCursorAdapter = new cursorAdapter(getActivity(),data);
+        mCursorAdapter.swapCursor(data);
+        gridView.setAdapter(mCursorAdapter);
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mCursorAdapter.swapCursor(null);
     }
 }
