@@ -18,11 +18,11 @@ public class MovieDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
         if (savedInstanceState==null){
-            Bundle args = new Bundle();
+           /* Bundle args = new Bundle();
             args.putParcelable(DetailFragment.mKeyIntent,getIntent().getData());
             DetailFragment detailFragment = new DetailFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentDetails, detailFragment, DetailFragment.DETAILS_TAG).commit();
+                    .replace(R.id.fragmentDetails, detailFragment, DetailFragment.DETAILS_TAG).commit();*/
         }
 
     }

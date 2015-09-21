@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -60,7 +59,7 @@ public class DetailFragment extends Fragment {
     private SharedPreferences preferences;
 
     public DetailFragment() {
-
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -71,8 +70,13 @@ public class DetailFragment extends Fragment {
         Bundle getArgs = getArguments();
         if (getArgs != null) {
             mResultsEntity = getArgs.getParcelable(mKeyIntent);
+        } else {
+            Bundle getIntent = getActivity().getIntent().getExtras();
+            if (getIntent != null)
+                mResultsEntity = getIntent.getParcelable(mKeyIntent);
         }
         init();
+        list.addHeaderView(header);
         if (mResultsEntity != null) {
             final DatabaseSource source = new DatabaseSource(getActivity());
             final int check = source.isFavourite(mResultsEntity.getId());
@@ -85,11 +89,12 @@ public class DetailFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (check == 1) {
-                        Toast.makeText(getActivity(), "Added To Your FavouriteList", Toast.LENGTH_SHORT).show();
                         favourite.setBackgroundColor(Color.LTGRAY);
+                        source.favourite(mResultsEntity.getId(),0);
                     } else {
-                        Toast.makeText(getActivity(), "Removed From Your FavouriteList", Toast.LENGTH_SHORT).show();
                         favourite.setBackgroundColor(Color.rgb(198, 226, 255));
+                        source.favourite(mResultsEntity.getId(),1);
+
                     }
                 }
             });
@@ -101,10 +106,9 @@ public class DetailFragment extends Fragment {
             }
             retrieveData(mResultsEntity.getId());
 
-        }else {
+        } else {
             pb.setVisibility(View.GONE);
         }
-        list.addHeaderView(header);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -127,9 +131,11 @@ public class DetailFragment extends Fragment {
         title.setText(mResultsEntity.getOriginal_title());
         description.setText(mResultsEntity.getOverview());
         rate.setText(mResultsEntity.getVote_average() + "/10");
-        Picasso.with(getActivity()).load("https://image.tmdb.org/t/p/w185" + mResultsEntity.getPoster_path()).resize(150, 200).into(poster);
+        int dimens = (int) getActivity().getResources().getDimension(R.dimen.detailPoster);
+        Picasso.with(getActivity()).load("https://image.tmdb.org/t/p/w185" + mResultsEntity.getPoster_path())
+                .resize(dimens, dimens + 100).into(poster);
         if (!mResultsEntity.getRelease_date().isEmpty()) {
-            String date_obj = mResultsEntity.getRelease_date() + " 00:00:00.0";
+            String date_obj = mResultsEntity.getRelease_date();
             int date = formatDate(date_obj);
             year.setText(date + "");
             mResultsEntity.setRelease_date(date + "");
@@ -140,20 +146,20 @@ public class DetailFragment extends Fragment {
     private void retrieveData(int id) {
         ConnectionTask task = new ConnectionTask();
         task.setAsyncResponse(new AsyncResponse() {
-            @Override
-            public void connectionTask(HashMap output) {
-                String videos = (String) output.get("firstConnection");
-                String reviews = (String) output.get("secondConnection");
-                ParserTask parserTask = new ParserTask(getActivity(), pb, 2, new AsyncParserResponse() {
-                    @Override
-                    public void parserTask(HashMap output) {
-                        updateDisplay(output);
-                    }
-                });
-                parserTask.execute(videos, reviews);
-            }
+                                  @Override
+                                  public void connectionTask(HashMap output) {
+                                      String videos = (String) output.get("firstConnection");
+                                      String reviews = (String) output.get("secondConnection");
+                                      ParserTask parserTask = new ParserTask(getActivity(), pb, 2, new AsyncParserResponse() {
+                                          @Override
+                                          public void parserTask(HashMap output) {
+                                              updateDisplay(output);
+                                          }
+                                      });
+                                      parserTask.execute(videos, reviews);
+                                  }
 
-        }
+                              }
         );
         String urlVideos = "http://api.themoviedb.org/3/movie/" + id + "/videos?api_key=04db6a4e0e321dd1bec24ff22c995709";
         String urlReviews = "http://api.themoviedb.org/3/movie/" + id + "/reviews?api_key=04db6a4e0e321dd1bec24ff22c995709";
@@ -161,7 +167,7 @@ public class DetailFragment extends Fragment {
     }
 
     private int formatDate(String s) throws ParseException {
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = dateFormat.parse(s);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="image_movie_width">190dp</dimen>
+    <dimen name="detailPoster">150dp</dimen>
+
+</resources>

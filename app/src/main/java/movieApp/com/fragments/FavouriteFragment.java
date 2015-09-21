@@ -45,21 +45,10 @@ public class FavouriteFragment extends Fragment implements LoaderCallbacks<Curso
        // gridView.setAdapter(mCursorAdapter);
         return  root;
     }
-   void retrieveFavourites(){
-       resultsEntities = new ArrayList<>();
-       ArrayList<String> Posters = new ArrayList<>();
-       DatabaseSource source = new DatabaseSource(getActivity());
-       resultsEntities = source.retrieveFav();
-       for (Response.ResultsEntity entity: resultsEntities) {
-            Posters.add(entity.getPoster_path());
-        }
-        ResponseAdapter adapter = new ResponseAdapter(getActivity(),R.layout.movie_item,Posters);
-        gridView.setAdapter(adapter);
-    }
     @Override
     public void onResume() {
         super.onResume();
-       // retrieveFavourites();
+
     }
 
     @Override

@@ -34,6 +34,8 @@ public class cursorAdapter extends android.widget.CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         ImageView iv = (ImageView) view.findViewById(R.id.movie);
         String poster = cursor.getString(cursor.getColumnIndex(Contract.Movies.MOVIE_POSTER_PATH));
-        Picasso.with(context).load("https://image.tmdb.org/t/p/w185"+poster).resize(300,300).into(iv);
+        int  dimens = (int) context.getResources().getDimension(R.dimen.image_movie_width);
+            Picasso.with(context).load("https://image.tmdb.org/t/p/w185" + poster).
+                    resize(dimens, dimens+100).into(iv);
     }
 }
