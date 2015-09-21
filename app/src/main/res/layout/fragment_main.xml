@@ -2,24 +2,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="movieApp.com.fragments.MainActivityFragment"
-    android:layout_margin="@dimen/abc_action_bar_icon_vertical_padding_material">
+    tools:context="movieApp.com.fragments.MainActivityFragment">
 
     <GridView
         android:id="@+id/list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:columnWidth="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnWidth="@dimen/image_movie_width"
         android:numColumns="2"
         android:verticalSpacing="0dp"
         android:horizontalSpacing="0dp"
-        android:stretchMode="columnWidth"
-        android:gravity="left"/>
+        android:stretchMode="none"
+        android:gravity="start"/>
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
         style="@android:style/Animation.Activity"/>
 </RelativeLayout>

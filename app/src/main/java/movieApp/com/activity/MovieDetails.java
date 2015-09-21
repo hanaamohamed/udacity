@@ -6,15 +6,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import activity.com.movietesttwo.movieApp.com.R;
+import movieApp.com.fragments.DetailFragment;
 
 
 public class MovieDetails extends AppCompatActivity {
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
+        if (savedInstanceState==null){
+            Bundle args = new Bundle();
+            args.putParcelable(DetailFragment.mKeyIntent,getIntent().getData());
+            DetailFragment detailFragment = new DetailFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentDetails, detailFragment, DetailFragment.DETAILS_TAG).commit();
+        }
 
     }
 

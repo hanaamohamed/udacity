@@ -3,6 +3,7 @@ package movieApp.com.fragments;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import movieApp.com.classes.AsyncParserResponse;
+import movieApp.com.classes.ConnectionLoaderTask;
 import movieApp.com.database.DatabaseSource;
 import movieApp.com.activity.MovieDetails;
 import activity.com.movietesttwo.movieApp.com.R;
@@ -37,8 +39,17 @@ import movieApp.com.classes.Response;
  * A placeholder fragment containing a simple view.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class MainActivityFragment extends Fragment{
+public class MainActivityFragment extends Fragment {
 
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        void onItemSelected(Response.ResultsEntity resultsEntity);
+        void getTheFirstItem(Response.ResultsEntity firstMovie);
+    }
+
+    private static final int ID = 0;
     GridView gridView;
     ProgressBar pb;
     SharedPreferences preferences;
@@ -60,9 +71,10 @@ public class MainActivityFragment extends Fragment{
             public void onItemClick(android.widget.AdapterView<?> parent, View view, int position, long id) {
                 for (Response.ResultsEntity results : resultsEntities) {
                     if (results.getPoster_path() == parent.getItemAtPosition(position)) {
-                        Intent intent = new Intent(getActivity(), MovieDetails.class);
+                       /* Intent intent = new Intent(getActivity(), MovieDetails.class);
                         intent.putExtra("movieApp.com.classes.Response.ResultsEntity", results);
-                        startActivity(intent);
+                        startActivity(intent);*/
+                        ((Callback) getActivity()).onItemSelected(results);
                     }
                 }
 
@@ -73,7 +85,8 @@ public class MainActivityFragment extends Fragment{
     }
 
     private void requestData() {
-        ConnectionTask task = new ConnectionTask(new AsyncResponse() {
+        ConnectionTask task = new ConnectionTask();
+        task.setAsyncResponse(new AsyncResponse() {
             @Override
             public void connectionTask(HashMap output) {
                 ParserTask parserTask = new ParserTask(getActivity(), pb, 1, new AsyncParserResponse() {
@@ -105,6 +118,7 @@ public class MainActivityFragment extends Fragment{
             s = databaseSource.allMovies();
         } else {
             resultsEntities = s;
+            ((Callback)getActivity()).getTheFirstItem(s.get(0));
             ArrayList<String> imgList = new ArrayList<>();
             for (int i = 0; i < s.size(); i++) imgList.add(s.get(i).getPoster_path());
             databaseSource.insertAll(s);
@@ -132,9 +146,14 @@ public class MainActivityFragment extends Fragment{
                 return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
         requestData();
     }
+
+
+
+
 }

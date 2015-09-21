@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="movieApp.com.fragments.MovieDetailsFragment">
+    tools:context="movieApp.com.fragments.DetailFragment">
 
     <ListView
         android:id="@+id/trailerList"
@@ -12,10 +12,10 @@
         android:dividerHeight="0dp"
         android:headerDividersEnabled="false"/>
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBar2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        style="@style/Base.Widget.AppCompat.ProgressBar"/>
+        style="@android:style/Animation.Activity"/>
 
 </RelativeLayout>

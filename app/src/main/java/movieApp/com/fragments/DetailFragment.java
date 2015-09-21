@@ -1,6 +1,7 @@
 package movieApp.com.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -42,7 +43,7 @@ import movieApp.com.database.DatabaseSource;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MovieDetailsFragment extends Fragment {
+public class DetailFragment extends Fragment {
 
     ImageView poster;
     TextView title;
@@ -53,10 +54,12 @@ public class MovieDetailsFragment extends Fragment {
     View root, header;
     ListView list;
     ProgressBar pb;
+    Response.ResultsEntity mResultsEntity;
+    public static String mKeyIntent = "movieDetails";
+    public static final String DETAILS_TAG = "details";
+    private SharedPreferences preferences;
 
-    Response.ResultsEntity resultsEntity;
-
-    public MovieDetailsFragment() {
+    public DetailFragment() {
 
     }
 
@@ -64,14 +67,15 @@ public class MovieDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_movie_details, container, false);
-        header = inflater.inflate(R.layout.header_movie_list, container, false);
-        Bundle bundle = getActivity().getIntent().getExtras();
-        if (bundle != null)
-            resultsEntity = bundle.getParcelable("movieApp.com.classes.Response.ResultsEntity");
+        header = inflater.inflate(R.layout.header_movie_list, null, false);
+        Bundle getArgs = getArguments();
+        if (getArgs != null) {
+            mResultsEntity = getArgs.getParcelable(mKeyIntent);
+        }
         init();
-        if (resultsEntity != null) {
+        if (mResultsEntity != null) {
             final DatabaseSource source = new DatabaseSource(getActivity());
-            final int check = source.isFavourite(resultsEntity.getId());
+            final int check = source.isFavourite(mResultsEntity.getId());
             if (check == 1)
                 favourite.setBackgroundColor(Color.rgb(198, 226, 255));
             else
@@ -81,21 +85,27 @@ public class MovieDetailsFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (check == 1) {
-                        Toast.makeText(getActivity(), source.favourite(resultsEntity.getId(), 0) + "", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Added To Your FavouriteList", Toast.LENGTH_SHORT).show();
                         favourite.setBackgroundColor(Color.LTGRAY);
                     } else {
-                        Toast.makeText(getActivity(), source.favourite(resultsEntity.getId(), 1) + "", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Removed From Your FavouriteList", Toast.LENGTH_SHORT).show();
                         favourite.setBackgroundColor(Color.rgb(198, 226, 255));
                     }
                 }
             });
-        }
-        try {
-            setData();
-        } catch (ParseException e) {
-            Log.e("DATE", "error", e);
+
+            try {
+                setData();
+            } catch (ParseException e) {
+                Log.e("DATE", "error", e);
+            }
+            retrieveData(mResultsEntity.getId());
+
+        }else {
+            pb.setVisibility(View.GONE);
         }
         list.addHeaderView(header);
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -109,28 +119,27 @@ public class MovieDetailsFragment extends Fragment {
             }
         });
 
+
         return root;
     }
 
     private void setData() throws ParseException {
-        if (resultsEntity != null) {
-            title.setText(resultsEntity.getOriginal_title());
-            description.setText(resultsEntity.getOverview());
-            rate.setText(resultsEntity.getVote_average() + "/10");
-            Picasso.with(getActivity()).load("https://image.tmdb.org/t/p/w185" + resultsEntity.getPoster_path()).resize(150, 200).into(poster);
-            if (!resultsEntity.getRelease_date().isEmpty()) {
-                String date_obj = resultsEntity.getRelease_date() + " 00:00:00.0";
-                int date = formatDate(date_obj);
-                year.setText(date + "");
-                resultsEntity.setRelease_date(date + "");
-            } else
-                year.setText("N/A");
-            retrieveData(resultsEntity.getId());
-        }
+        title.setText(mResultsEntity.getOriginal_title());
+        description.setText(mResultsEntity.getOverview());
+        rate.setText(mResultsEntity.getVote_average() + "/10");
+        Picasso.with(getActivity()).load("https://image.tmdb.org/t/p/w185" + mResultsEntity.getPoster_path()).resize(150, 200).into(poster);
+        if (!mResultsEntity.getRelease_date().isEmpty()) {
+            String date_obj = mResultsEntity.getRelease_date() + " 00:00:00.0";
+            int date = formatDate(date_obj);
+            year.setText(date + "");
+            mResultsEntity.setRelease_date(date + "");
+        } else
+            year.setText("N/A");
     }
 
     private void retrieveData(int id) {
-        ConnectionTask task = new ConnectionTask(new AsyncResponse() {
+        ConnectionTask task = new ConnectionTask();
+        task.setAsyncResponse(new AsyncResponse() {
             @Override
             public void connectionTask(HashMap output) {
                 String videos = (String) output.get("firstConnection");
@@ -168,7 +177,7 @@ public class MovieDetailsFragment extends Fragment {
         description = (TextView) header.findViewById(R.id.des);
         favourite = (Button) header.findViewById(R.id.fav);
         list = (ListView) root.findViewById(R.id.trailerList);
-        pb = (ProgressBar) root.findViewById(R.id.progressBar);
+        pb = (ProgressBar) root.findViewById(R.id.progressBar2);
     }
 
     private void updateDisplay(HashMap hashMap) {
@@ -189,4 +198,5 @@ public class MovieDetailsFragment extends Fragment {
             list.setAdapter(movieDetailsAdapter);
         }
     }
+
 }

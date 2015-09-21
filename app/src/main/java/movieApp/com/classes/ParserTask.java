@@ -59,7 +59,7 @@ public class ParserTask extends AsyncTask<String, Void, HashMap> {
     @Override
     protected void onPostExecute(HashMap s) {
         super.onPostExecute(s);
-        pb.setVisibility(View.INVISIBLE);
+        pb.setVisibility(View.GONE);
         asyncParserResponse.parserTask(s);
     }
 

@@ -25,7 +25,7 @@
     <!--details-->
     <fragment
         android:id="@+id/fragmentDetails"
-        android:name="movieApp.com.fragments.MovieDetailsFragment"
+        android:name="movieApp.com.fragments.DetailFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_movie_details" />

@@ -9,7 +9,8 @@ public class ConnectionTask extends AsyncTask<String, Void, HashMap> {
 
     AsyncResponse asyncResponse = null;
 
-    public ConnectionTask(AsyncResponse asyncResponse) {
+
+    public void setAsyncResponse(AsyncResponse asyncResponse){
         this.asyncResponse = asyncResponse;
     }
 

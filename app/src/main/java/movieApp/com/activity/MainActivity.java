@@ -1,5 +1,6 @@
 package movieApp.com.activity;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,25 +11,27 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
 import activity.com.movietesttwo.movieApp.com.R;
+import movieApp.com.classes.Response;
 import movieApp.com.fragments.FavouriteFragment;
 import movieApp.com.fragments.MainActivityFragment;
-import movieApp.com.fragments.MovieDetailsFragment;
+import movieApp.com.fragments.DetailFragment;
 
 
-public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
+public class MainActivity extends ActionBarActivity implements ActionBar.TabListener,MainActivityFragment.Callback {
 
     ViewPager pager;
+    static public Boolean twoPane = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Boolean twoPane = false;
         if (findViewById(R.id.fragmentDetails) != null) {
-            if (savedInstanceState == null)
+            if (savedInstanceState == null) {
+                DetailFragment detailFragment = new DetailFragment();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentDetails, new MovieDetailsFragment())
-                        .addToBackStack("MoviesDetails").commit();
+                        .replace(R.id.fragmentDetails, detailFragment, DetailFragment.DETAILS_TAG).commit();
+            }
             twoPane = true;
         }
         pager = (ViewPager) findViewById(R.id.pager);
@@ -86,6 +89,35 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     public void onTabReselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
 
+    }
+
+    @Override
+    public void onItemSelected(Response.ResultsEntity resultsEntity) {
+        if (twoPane){
+            Bundle args = new Bundle();
+            args.putParcelable(DetailFragment.mKeyIntent,resultsEntity);
+            DetailFragment detailFragment = new DetailFragment();
+            detailFragment.setArguments(args);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentDetails, detailFragment, DetailFragment.DETAILS_TAG).commit();
+        }else{
+            Intent intent = new Intent(getApplicationContext(), MovieDetails.class);
+                        intent.putExtra(DetailFragment.mKeyIntent, resultsEntity);
+                        startActivity(intent);
+        }
+    }
+
+    @Override
+    public void getTheFirstItem(Response.ResultsEntity firstMovie) {
+        if (twoPane){
+            Bundle args = new Bundle();
+            args.putParcelable(DetailFragment.mKeyIntent,firstMovie);
+            DetailFragment detailFragment = new DetailFragment();
+            detailFragment.setArguments(args);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentDetails, detailFragment, DetailFragment.DETAILS_TAG).commit();
+
+        }
     }
 
     private class FragmentAdapter extends FragmentPagerAdapter {
