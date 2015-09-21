@@ -46,6 +46,7 @@ public class MainActivityFragment extends Fragment {
          * DetailFragmentCallback for when an item has been selected.
          */
         void onItemSelected(Response.ResultsEntity resultsEntity);
+
         void getTheFirstItem(Response.ResultsEntity firstMovie);
     }
 
@@ -87,19 +88,19 @@ public class MainActivityFragment extends Fragment {
     private void requestData() {
         ConnectionTask task = new ConnectionTask();
         task.setAsyncResponse(new AsyncResponse() {
-            @Override
-            public void connectionTask(HashMap output) {
-                ParserTask parserTask = new ParserTask(getActivity(), pb, 1, new AsyncParserResponse() {
-                    @Override
-                    public void parserTask(HashMap output) {
-                        updateDisplay(output);
-                    }
-                });
-                String connection = (String) output.get("firstConnection");
-                parserTask.execute(connection);
-            }
+                                  @Override
+                                  public void connectionTask(HashMap output) {
+                                      ParserTask parserTask = new ParserTask(getActivity(), pb, 1, new AsyncParserResponse() {
+                                          @Override
+                                          public void parserTask(HashMap output) {
+                                              updateDisplay(output);
+                                          }
+                                      });
+                                      String connection = (String) output.get("firstConnection");
+                                      parserTask.execute(connection);
+                                  }
 
-        }
+                              }
         );
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sortBy = preferences.getString(getString(R.string.sorting), getString(R.string.most_popular));
@@ -118,7 +119,7 @@ public class MainActivityFragment extends Fragment {
             s = databaseSource.allMovies();
         } else {
             resultsEntities = s;
-            ((Callback)getActivity()).getTheFirstItem(s.get(0));
+            ((Callback) getActivity()).getTheFirstItem(s.get(0));
             ArrayList<String> imgList = new ArrayList<>();
             for (int i = 0; i < s.size(); i++) imgList.add(s.get(i).getPoster_path());
             databaseSource.insertAll(s);
@@ -152,8 +153,6 @@ public class MainActivityFragment extends Fragment {
         super.onResume();
         requestData();
     }
-
-
 
 
 }

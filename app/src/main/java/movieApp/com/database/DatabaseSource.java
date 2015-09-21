@@ -34,7 +34,7 @@ public class DatabaseSource {
                 ContentValues values = new ContentValues();
                 values.put(Contract.Movies.MOVIE_iD, resultsEntity.getId());
                 values.put(Contract.Movies.MOVIE_TITLE, resultsEntity.getTitle());
-                values.put(Contract.Movies.MOVIE_DATE, 2002);
+                values.put(Contract.Movies.MOVIE_DATE, resultsEntity.getRelease_date());
                 values.put(Contract.Movies.MOVIE_OVERVIEW, resultsEntity.getOverview());
                 values.put(Contract.Movies.FAVOURITE, 0);
                 values.put(Contract.Movies.MOVIE_RATE, resultsEntity.getVote_average());

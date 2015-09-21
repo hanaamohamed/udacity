@@ -17,10 +17,12 @@ import movieApp.com.fragments.MainActivityFragment;
 import movieApp.com.fragments.DetailFragment;
 
 
-public class MainActivity extends ActionBarActivity implements ActionBar.TabListener,MainActivityFragment.Callback {
+public class MainActivity extends ActionBarActivity implements ActionBar.TabListener,MainActivityFragment.Callback,FavouriteFragment.CallBackFavourite
+{
 
     ViewPager pager;
     static public Boolean twoPane = false;
+    String mSelectedFragments = "home";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
         pager.setCurrentItem(tab.getPosition());
+       // mSelectedFragments = (String) tab.getText();
     }
 
     @Override
@@ -117,6 +120,35 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentDetails, detailFragment, DetailFragment.DETAILS_TAG).commit();
 
+        }
+    }
+
+    @Override
+    public void getFirstFavouriteItem(Response.ResultsEntity firstMovie) {
+        if (twoPane){
+            Bundle args = new Bundle();
+            args.putParcelable(DetailFragment.mKeyIntent,firstMovie);
+            DetailFragment detailFragment = new DetailFragment();
+            detailFragment.setArguments(args);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentDetails, detailFragment, DetailFragment.DETAILS_TAG).commit();
+
+        }
+    }
+
+    @Override
+    public void getSelectedFavouriteItem(Response.ResultsEntity selectedMovie) {
+        if (twoPane){
+            Bundle args = new Bundle();
+            args.putParcelable(DetailFragment.mKeyIntent,selectedMovie);
+            DetailFragment detailFragment = new DetailFragment();
+            detailFragment.setArguments(args);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentDetails, detailFragment, DetailFragment.DETAILS_TAG).commit();
+        }else{
+            Intent intent = new Intent(getApplicationContext(), MovieDetails.class);
+            intent.putExtra(DetailFragment.mKeyIntent, selectedMovie);
+            startActivity(intent);
         }
     }
 
