@@ -1,4 +1,4 @@
-package movieApp.com.classes;
+package movieApp.com;
 
 import java.io.BufferedReader;
 import java.io.IOException;

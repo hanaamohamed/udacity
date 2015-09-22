@@ -1,7 +1,11 @@
-package movieApp.com.classes;
+package movieApp.com;
 
 import com.google.gson.Gson;
 import java.util.List;
+
+import movieApp.com.classes.Response;
+import movieApp.com.classes.Review;
+import movieApp.com.classes.Video;
 
 
 public class Parser {

@@ -1,12 +1,13 @@
 package movieApp.com.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,12 +28,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import movieApp.com.UI.MovieDetailsAdapter;
 import activity.com.movietesttwo.movieApp.com.R;
+import movieApp.com.ConnectionLoaderTask;
+import movieApp.com.ParserTask;
+import movieApp.com.UI.MovieDetailsAdapter;
 import movieApp.com.classes.AsyncParserResponse;
-import movieApp.com.classes.AsyncResponse;
-import movieApp.com.classes.ConnectionTask;
-import movieApp.com.classes.ParserTask;
 import movieApp.com.classes.Response;
 import movieApp.com.classes.Review;
 import movieApp.com.classes.Video;
@@ -42,7 +42,7 @@ import movieApp.com.database.DatabaseSource;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<HashMap> {
 
     ImageView poster;
     TextView title;
@@ -57,6 +57,7 @@ public class DetailFragment extends Fragment {
     public static String mKeyIntent = "movieDetails";
     public static final String DETAILS_TAG = "details";
     private SharedPreferences preferences;
+    private int mLoaderID = 1;
 
     public DetailFragment() {
         setHasOptionsMenu(true);
@@ -90,10 +91,10 @@ public class DetailFragment extends Fragment {
                 public void onClick(View v) {
                     if (check == 1) {
                         favourite.setBackgroundColor(Color.LTGRAY);
-                        source.favourite(mResultsEntity.getId(),0);
+                        source.favourite(mResultsEntity.getId(), 0);
                     } else {
                         favourite.setBackgroundColor(Color.rgb(198, 226, 255));
-                        source.favourite(mResultsEntity.getId(),1);
+                        source.favourite(mResultsEntity.getId(), 1);
 
                     }
                 }
@@ -104,8 +105,7 @@ public class DetailFragment extends Fragment {
             } catch (ParseException e) {
                 Log.e("DATE", "error", e);
             }
-            retrieveData(mResultsEntity.getId());
-
+            getLoaderManager().initLoader(mLoaderID, null, this);
         } else {
             pb.setVisibility(View.GONE);
         }
@@ -119,7 +119,6 @@ public class DetailFragment extends Fragment {
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(intent);
                 }
-
             }
         });
 
@@ -143,28 +142,6 @@ public class DetailFragment extends Fragment {
             year.setText("N/A");
     }
 
-    private void retrieveData(int id) {
-        ConnectionTask task = new ConnectionTask();
-        task.setAsyncResponse(new AsyncResponse() {
-                                  @Override
-                                  public void connectionTask(HashMap output) {
-                                      String videos = (String) output.get("firstConnection");
-                                      String reviews = (String) output.get("secondConnection");
-                                      ParserTask parserTask = new ParserTask(getActivity(), pb, 2, new AsyncParserResponse() {
-                                          @Override
-                                          public void parserTask(HashMap output) {
-                                              updateDisplay(output);
-                                          }
-                                      });
-                                      parserTask.execute(videos, reviews);
-                                  }
-
-                              }
-        );
-        String urlVideos = "http://api.themoviedb.org/3/movie/" + id + "/videos?api_key=04db6a4e0e321dd1bec24ff22c995709";
-        String urlReviews = "http://api.themoviedb.org/3/movie/" + id + "/reviews?api_key=04db6a4e0e321dd1bec24ff22c995709";
-        task.execute(urlVideos, urlReviews);
-    }
 
     private int formatDate(String s) throws ParseException {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -205,4 +182,35 @@ public class DetailFragment extends Fragment {
         }
     }
 
+    @Override
+    public Loader<HashMap> onCreateLoader(int id, Bundle args) {
+        ConnectionLoaderTask connectionLoaderTask = new ConnectionLoaderTask(getActivity());
+        int movieId = mResultsEntity.getId();
+        connectionLoaderTask.addUri("http://api.themoviedb.org/3/movie/" + movieId + "/videos?api_key=04db6a4e0e321dd1bec24ff22c995709");
+        connectionLoaderTask.addUri("http://api.themoviedb.org/3/movie/" + movieId + "/reviews?api_key=04db6a4e0e321dd1bec24ff22c995709");
+        return connectionLoaderTask;
+    }
+
+
+    @Override
+    public void onLoadFinished(Loader<HashMap> loader, HashMap data) {
+        String videos = (String) data.get("firstConnection");
+        String reviews = (String) data.get("secondConnection");
+        int secondParse = 2;
+        ParserTask parserTask = new ParserTask(getActivity());
+        parserTask.setPb(pb);
+        parserTask.setTypeParser(secondParse);
+        parserTask.setAsyncParserResponse(new AsyncParserResponse() {
+            @Override
+            public void parserTask(HashMap output) {
+                updateDisplay(output);
+            }
+        });
+        parserTask.execute(videos, reviews);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<HashMap> loader) {
+
+    }
 }

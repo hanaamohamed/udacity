@@ -3,7 +3,6 @@ package movieApp.com.fragments;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -18,39 +17,27 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import movieApp.com.ConnectionLoaderTask;
 import movieApp.com.classes.AsyncParserResponse;
-import movieApp.com.classes.ConnectionLoaderTask;
 import movieApp.com.database.DatabaseSource;
-import movieApp.com.activity.MovieDetails;
 import activity.com.movietesttwo.movieApp.com.R;
 import movieApp.com.activity.SettingsActivity;
 import movieApp.com.UI.ResponseAdapter;
-import movieApp.com.classes.AsyncResponse;
-import movieApp.com.classes.ConnectionTask;
-import movieApp.com.classes.ParserTask;
+import movieApp.com.ParserTask;
 import movieApp.com.classes.Response;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class MainActivityFragment extends Fragment {
+public class MainActivityFragment extends Fragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<HashMap> {
 
-    public interface Callback {
-        /**
-         * DetailFragmentCallback for when an item has been selected.
-         */
-        void onItemSelected(Response.ResultsEntity resultsEntity);
 
-        void getTheFirstItem(Response.ResultsEntity firstMovie);
-    }
-
-    private static final int ID = 0;
+    private static final int mLoaderID = 0;
     GridView gridView;
     ProgressBar pb;
     SharedPreferences preferences;
@@ -72,42 +59,14 @@ public class MainActivityFragment extends Fragment {
             public void onItemClick(android.widget.AdapterView<?> parent, View view, int position, long id) {
                 for (Response.ResultsEntity results : resultsEntities) {
                     if (results.getPoster_path() == parent.getItemAtPosition(position)) {
-                       /* Intent intent = new Intent(getActivity(), MovieDetails.class);
-                        intent.putExtra("movieApp.com.classes.Response.ResultsEntity", results);
-                        startActivity(intent);*/
                         ((Callback) getActivity()).onItemSelected(results);
                     }
                 }
 
             }
         });
-        requestData();
+        //requestData();
         return rootView;
-    }
-
-    private void requestData() {
-        ConnectionTask task = new ConnectionTask();
-        task.setAsyncResponse(new AsyncResponse() {
-                                  @Override
-                                  public void connectionTask(HashMap output) {
-                                      ParserTask parserTask = new ParserTask(getActivity(), pb, 1, new AsyncParserResponse() {
-                                          @Override
-                                          public void parserTask(HashMap output) {
-                                              updateDisplay(output);
-                                          }
-                                      });
-                                      String connection = (String) output.get("firstConnection");
-                                      parserTask.execute(connection);
-                                  }
-
-                              }
-        );
-        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String sortBy = preferences.getString(getString(R.string.sorting), getString(R.string.most_popular));
-        if (sortBy.equals(getString(R.string.highestRated)))
-            task.execute("http://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&api_key=04db6a4e0e321dd1bec24ff22c995709");
-        if (sortBy.equals(getString(R.string.most_popular)))
-            task.execute("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04db6a4e0e321dd1bec24ff22c995709");
     }
 
 
@@ -127,7 +86,6 @@ public class MainActivityFragment extends Fragment {
             gridView.setAdapter(adapter);
         }
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -151,7 +109,55 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        requestData();
+        //requestData();
+        getLoaderManager().restartLoader(mLoaderID, null, this);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(mLoaderID, savedInstanceState, this);
+    }
+
+
+    @Override
+    public android.support.v4.content.Loader<HashMap> onCreateLoader(int id, Bundle args) {
+        ConnectionLoaderTask connectionLoaderTask = new ConnectionLoaderTask(getActivity());
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sortBy = preferences.getString(getString(R.string.sorting), getString(R.string.most_popular));
+        if (sortBy.equals(getString(R.string.highestRated)))
+            connectionLoaderTask.addUri("http://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&api_key=04db6a4e0e321dd1bec24ff22c995709");
+        if (sortBy.equals(getString(R.string.most_popular)))
+            connectionLoaderTask.addUri("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04db6a4e0e321dd1bec24ff22c995709");
+        return connectionLoaderTask;
+    }
+
+    @Override
+    public void onLoadFinished(android.support.v4.content.Loader<HashMap> loader, HashMap data) {
+        String firstConnectionResult = (String) data.get("firstConnection");
+        int mainParse =1;
+        ParserTask parserTask = new ParserTask(getActivity());
+        parserTask.setPb(pb);
+        parserTask.setTypeParser(mainParse);
+        parserTask.setAsyncParserResponse(new AsyncParserResponse() {
+            @Override
+            public void parserTask(HashMap output) {
+                updateDisplay(output);
+            }
+        });
+        parserTask.execute(firstConnectionResult);
+
+    }
+
+    @Override
+    public void onLoaderReset(android.support.v4.content.Loader<HashMap> loader) {
+
+    }
+
+    public interface Callback {
+        void onItemSelected(Response.ResultsEntity resultsEntity);
+
+        void getTheFirstItem(Response.ResultsEntity firstMovie);
     }
 
 

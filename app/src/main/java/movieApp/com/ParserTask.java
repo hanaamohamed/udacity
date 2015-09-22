@@ -1,15 +1,16 @@
-package movieApp.com.classes;
+package movieApp.com;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import movieApp.com.classes.AsyncParserResponse;
+import movieApp.com.classes.Response;
 
 
 public class ParserTask extends AsyncTask<String, Void, HashMap> {
@@ -19,11 +20,20 @@ public class ParserTask extends AsyncTask<String, Void, HashMap> {
     int typeParser;
     AsyncParserResponse asyncParserResponse;
 
-    public ParserTask(Context context, ProgressBar pb, int typeParser, AsyncParserResponse asyncResponse) {
+    public ParserTask(Context context) {
         this.context = context;
-        this.pb = pb;
+    }
+
+    public void setAsyncParserResponse(AsyncParserResponse asyncParserResponse) {
+        this.asyncParserResponse = asyncParserResponse;
+    }
+
+    public void setTypeParser(int typeParser) {
         this.typeParser = typeParser;
-        this.asyncParserResponse = asyncResponse;
+    }
+
+    public void setPb(ProgressBar pb) {
+        this.pb = pb;
     }
 
     @Override
