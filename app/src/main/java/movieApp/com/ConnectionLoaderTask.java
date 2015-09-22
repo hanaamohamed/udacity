@@ -10,22 +10,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import movieApp.com.classes.AsyncResponse;
 
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ConnectionLoaderTask extends AsyncTaskLoader<HashMap> {
     List<String> mUri;
-    AsyncResponse mResponse;
 
     public ConnectionLoaderTask(Context context) {
         super(context);
         mUri = new ArrayList<>();
     }
 
-    public void implementResponse(AsyncResponse response) {
-        mResponse = response;
-    }
 
     public void addUri(String Uri) {
         mUri.add(Uri);
@@ -55,7 +50,6 @@ public class ConnectionLoaderTask extends AsyncTaskLoader<HashMap> {
 
         if (isStarted()) {
             super.deliverResult(data);
-           // mResponse.connectionTask(data);
         }
     }
 

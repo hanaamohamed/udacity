@@ -27,7 +27,6 @@ public class ParserTask extends AsyncTask<String, Void, HashMap> {
     public void setAsyncParserResponse(AsyncParserResponse asyncParserResponse) {
         this.asyncParserResponse = asyncParserResponse;
     }
-
     public void setTypeParser(int typeParser) {
         this.typeParser = typeParser;
     }
