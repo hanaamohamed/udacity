@@ -13,11 +13,11 @@ import android.support.v4.view.ViewPager;
 import activity.com.movietesttwo.movieApp.com.R;
 import movieApp.com.classes.Response;
 import movieApp.com.fragments.FavouriteFragment;
-import movieApp.com.fragments.MainActivityFragment;
+import movieApp.com.fragments.MainFragment;
 import movieApp.com.fragments.DetailFragment;
 
 
-public class MainActivity extends ActionBarActivity implements ActionBar.TabListener,MainActivityFragment.Callback,FavouriteFragment.CallBackFavourite
+public class MainActivity extends ActionBarActivity implements ActionBar.TabListener,MainFragment.Callback,FavouriteFragment.CallBackFavourite
 {
 
     ViewPager pager;
@@ -161,7 +161,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new MainActivityFragment();
+                    return new MainFragment();
                 case 1:
                     return new FavouriteFragment();
                 default:

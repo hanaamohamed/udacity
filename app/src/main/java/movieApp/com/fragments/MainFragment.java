@@ -20,6 +20,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import movieApp.com.ConnectionLoaderTask;
 import movieApp.com.classes.AsyncParserResponse;
@@ -34,16 +35,17 @@ import movieApp.com.classes.Response;
  * A placeholder fragment containing a simple view.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class MainActivityFragment extends Fragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<HashMap> {
+public class MainFragment extends Fragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<HashMap> {
 
 
     private static final int mLoaderID = 0;
     GridView gridView;
     ProgressBar pb;
     SharedPreferences preferences;
-    List<Response.ResultsEntity> resultsEntities;
+    List<Response.ResultsEntity> mResultMovies;
+    String mSortBy;
 
-    public MainActivityFragment() {
+    public MainFragment() {
         setHasOptionsMenu(true);
     }
 
@@ -52,12 +54,13 @@ public class MainActivityFragment extends Fragment implements android.support.v4
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
         pb = (ProgressBar) rootView.findViewById(R.id.progressBar);
         gridView = (GridView) rootView.findViewById(R.id.list);
         gridView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                for (Response.ResultsEntity results : resultsEntities) {
+                for (Response.ResultsEntity results : mResultMovies) {
                     if (results.getPoster_path() == parent.getItemAtPosition(position)) {
                         ((Callback) getActivity()).onItemSelected(results);
                     }
@@ -71,20 +74,30 @@ public class MainActivityFragment extends Fragment implements android.support.v4
 
 
     private void updateDisplay(HashMap hashMap) {
-        List<Response.ResultsEntity> s = (List<Response.ResultsEntity>) hashMap.get("movies");
-        DatabaseSource databaseSource = new DatabaseSource(getActivity());
-        if (s == null) {
+        mResultMovies = (List<Response.ResultsEntity>) hashMap.get("movies");
+        DatabaseSource databaseSource = new DatabaseSource(getActivity(), mSortBy);
+        if (mResultMovies == null) {
             Toast.makeText(getActivity(), "check your connection.", Toast.LENGTH_LONG).show();
-            s = databaseSource.allMovies();
+            if (Objects.equals(mSortBy, getString(R.string.most_popular)))
+                mResultMovies = databaseSource.allMovies();
+            if (Objects.equals(mSortBy, getString(R.string.highestRated)))
+                mResultMovies = databaseSource.allMovies();
+
         } else {
-            resultsEntities = s;
-            ((Callback) getActivity()).getTheFirstItem(s.get(0));
-            ArrayList<String> imgList = new ArrayList<>();
-            for (int i = 0; i < s.size(); i++) imgList.add(s.get(i).getPoster_path());
-            databaseSource.insertAll(s);
-            ResponseAdapter adapter = new ResponseAdapter(getActivity(), R.layout.movie_item, imgList);
-            gridView.setAdapter(adapter);
+            ((Callback) getActivity()).getTheFirstItem(mResultMovies.get(0));
+
+            if (Objects.equals(mSortBy, getString(R.string.most_popular)))
+                Toast.makeText(getActivity(), "" + databaseSource.insertAll(mResultMovies, getString(R.string.most_popular)), Toast.LENGTH_LONG).show();
+            if (Objects.equals(mSortBy, getString(R.string.highestRated)))
+                databaseSource.insertAll(mResultMovies, getString(R.string.highestRated));
+
         }
+        ArrayList<String> imgList = new ArrayList<>();
+        for (int i = 0; i < mResultMovies.size(); i++) {
+            imgList.add(mResultMovies.get(i).getPoster_path());
+        }
+        ResponseAdapter adapter = new ResponseAdapter(getActivity(), R.layout.movie_item, imgList);
+        gridView.setAdapter(adapter);
     }
 
     @Override
@@ -124,10 +137,10 @@ public class MainActivityFragment extends Fragment implements android.support.v4
     public android.support.v4.content.Loader<HashMap> onCreateLoader(int id, Bundle args) {
         ConnectionLoaderTask connectionLoaderTask = new ConnectionLoaderTask(getActivity());
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String sortBy = preferences.getString(getString(R.string.sorting), getString(R.string.most_popular));
-        if (sortBy.equals(getString(R.string.highestRated)))
+        mSortBy = preferences.getString(getString(R.string.sorting), getString(R.string.most_popular));
+        if (mSortBy.equals(getString(R.string.highestRated)))
             connectionLoaderTask.addUri("http://api.themoviedb.org/3/discover/movie?sort_by=vote_average.desc&api_key=04db6a4e0e321dd1bec24ff22c995709");
-        if (sortBy.equals(getString(R.string.most_popular)))
+        if (mSortBy.equals(getString(R.string.most_popular)))
             connectionLoaderTask.addUri("http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04db6a4e0e321dd1bec24ff22c995709");
         return connectionLoaderTask;
     }
@@ -135,7 +148,7 @@ public class MainActivityFragment extends Fragment implements android.support.v4
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<HashMap> loader, HashMap data) {
         String firstConnectionResult = (String) data.get("firstConnection");
-        int mainParse =1;
+        int mainParse = 1;
         ParserTask parserTask = new ParserTask(getActivity());
         parserTask.setPb(pb);
         parserTask.setTypeParser(mainParse);

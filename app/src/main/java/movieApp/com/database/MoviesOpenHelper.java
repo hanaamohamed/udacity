@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MoviesOpenHelper extends SQLiteOpenHelper {
 
-    public static String DatabaseName = "database.db";
-    public static int DatabaseVersion = 5;
+    public static String DatabaseName = "db";
+    public static int DatabaseVersion = 9;
 
     public MoviesOpenHelper(Context context) {
         super(context, DatabaseName, null, DatabaseVersion);
@@ -16,21 +16,35 @@ public class MoviesOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String TableCreate = "CREATE TABLE " + Contract.Movies.TableName + "(" +
-                Contract.Movies.ID + " INTEGER PRIMARY KEY," +
-                Contract.Movies.MOVIE_iD + " INTEGER  ," +
-                Contract.Movies.MOVIE_TITLE + " TEXT NOT NULL," +
-                Contract.Movies.MOVIE_DATE + " INTEGER  ," +
-                Contract.Movies.MOVIE_OVERVIEW + " TEXT ," +
-                Contract.Movies.MOVIE_RATE + " FLOAT ," +
-                Contract.Movies.MOVIE_POSTER_PATH + " TEXT ," +
-                Contract.Movies.FAVOURITE + " INT );";
-        db.execSQL(TableCreate);
+
+        String moviesMostPopTable = "CREATE TABLE " + Contract.MoviesMostPop.TableName + "(" +
+                Contract.MoviesMostPop.ID + " INTEGER PRIMARY KEY," +
+                Contract.MoviesMostPop.MOVIE_iD + " INTEGER  ," +
+                Contract.MoviesMostPop.MOVIE_TITLE + " TEXT NOT NULL," +
+                Contract.MoviesMostPop.MOVIE_DATE + " INTEGER  ," +
+                Contract.MoviesMostPop.MOVIE_OVERVIEW + " TEXT ," +
+                Contract.MoviesMostPop.MOVIE_RATE + " FLOAT ," +
+                Contract.MoviesMostPop.MOVIE_POSTER_PATH + " TEXT ," +
+                Contract.MoviesMostPop.FAVOURITE + " INTEGER );";
+
+        String  moviesMostRatedTable = "CREATE TABLE " + Contract.MoviesHighestRated.TableName + "(" +
+                Contract.MoviesHighestRated.ID + " INTEGER PRIMARY KEY," +
+                Contract.MoviesHighestRated.MOVIE_iD + " INTEGER  ," +
+                Contract.MoviesHighestRated.MOVIE_TITLE + " TEXT NOT NULL," +
+                Contract.MoviesHighestRated.MOVIE_DATE + " INTEGER  ," +
+                Contract.MoviesHighestRated.MOVIE_OVERVIEW + " TEXT ," +
+                Contract.MoviesHighestRated.MOVIE_RATE + " FLOAT ," +
+                Contract.MoviesHighestRated.MOVIE_POSTER_PATH + " TEXT ," +
+                Contract.MoviesHighestRated.FAVOURITE + " INTEGER );";
+
+        db.execSQL(moviesMostPopTable);
+        db.execSQL(moviesMostRatedTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE " + Contract.Movies.TableName);
+        db.execSQL("DROP TABLE IF EXISTS " + Contract.MoviesMostPop.TableName);
+        db.execSQL("DROP TABLE IF EXISTS " + Contract.MoviesHighestRated.TableName);
         onCreate(db);
     }
 }

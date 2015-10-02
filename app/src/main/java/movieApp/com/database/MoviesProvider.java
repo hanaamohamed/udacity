@@ -12,9 +12,16 @@ import android.util.Log;
 
 public class MoviesProvider extends ContentProvider {
 
-    private static final int AllMovies = 1;
-    private static final int MoviesByID = 2;
-    private static final int FavouriteMovies = 3;
+    /*selection from most popular*/
+    private static final int mAllMoviesMostPop = 1;
+    private static final int mMostPopMoviesByID = 2;
+    private static final int mMostPopMoviesByFav = 3;
+
+    /*selection from most rated*/
+    private static final int mAllMoviesMostRated = 4;
+    private static final int mMostRatedMoviesByID = 5;
+    private static final int mMostRatedMoviesByFav = 6;
+
     private static final String TAG = "ContentProvider";
 
 
@@ -22,10 +29,15 @@ public class MoviesProvider extends ContentProvider {
     MoviesOpenHelper moviesOpenHelper;
     UriMatcher uriMatcher = buildUriMatcher();
 
+    /*most popular*/
+    public static String SelectByIDFromMostPop = Contract.MoviesMostPop.TableName + "." + Contract.MoviesMostPop.MOVIE_iD + "=?";
+    String SelectByTitleFromMostPop = Contract.MoviesMostPop.TableName + "." + Contract.MoviesMostPop.MOVIE_TITLE + "= ?";
+    String SelectFavFromMostPop = Contract.MoviesMostPop.TableName + "." + Contract.MoviesMostPop.FAVOURITE + "=1";
 
-    public static String SelectByID = Contract.Movies.TableName + "." + Contract.Movies.MOVIE_iD + "=?";
-    String SelectByTitle = Contract.Movies.TableName + "." + Contract.Movies.MOVIE_TITLE + "= ?";
-    String SelectFav = Contract.Movies.TableName + "." + Contract.Movies.FAVOURITE + "=1";
+    /*most rated*/
+    public static String SelectByIDFromMostRat = Contract.MoviesHighestRated.TableName + "." + Contract.MoviesHighestRated.MOVIE_iD + "=?";
+    String SelectByTitleFromMostRat = Contract.MoviesHighestRated.TableName + "." + Contract.MoviesHighestRated.MOVIE_TITLE + "= ?";
+    String SelectFavFromMostRat = Contract.MoviesHighestRated.TableName + "." + Contract.MoviesHighestRated.FAVOURITE + " =1";
 
 
     @Override
@@ -36,25 +48,36 @@ public class MoviesProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor cursor = null;
         int matcher = uriMatcher.match(uri);
         switch (matcher) {
-            case AllMovies:
+            case mAllMoviesMostPop:
                 dbHelper = moviesOpenHelper.getReadableDatabase();
-                cursor = dbHelper.query(Contract.Movies.TableName, projection, selection, null, null, null, sortOrder);
+                cursor = dbHelper.query(Contract.MoviesMostPop.TableName, projection, selection, null, null, null, sortOrder);
                 break;
-            case MoviesByID:
+            case mMostPopMoviesByID:
                 dbHelper = moviesOpenHelper.getReadableDatabase();
-                //SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-                //queryBuilder.setTables(Contract.Movies.TableName);
                 String ID = uri.getPathSegments().get(1);
-                //queryBuilder.appendWhere(Contract.Movies.MOVIE_iD+"="+ID);
-                cursor = dbHelper.query(Contract.Movies.TableName, projection, SelectByID, new String[]{ID}, null, null, sortOrder);
+                cursor = dbHelper.query(Contract.MoviesMostPop.TableName, projection, SelectByIDFromMostPop, new String[]{ID}, null, null, sortOrder);
                 break;
-            case FavouriteMovies:
+            case mMostPopMoviesByFav:
                 dbHelper = moviesOpenHelper.getReadableDatabase();
-                cursor = dbHelper.query(Contract.Movies.TableName, projection, SelectFav, null, null, null, sortOrder);
+                cursor = dbHelper.query(Contract.MoviesMostPop.TableName, projection, SelectFavFromMostPop, null, null, null, sortOrder);
+                break;
+
+            case mAllMoviesMostRated:
+                dbHelper = moviesOpenHelper.getReadableDatabase();
+                cursor = dbHelper.query(Contract.MoviesHighestRated.TableName, projection, selection, null, null, null, sortOrder);
+                break;
+            case mMostRatedMoviesByID:
+                dbHelper = moviesOpenHelper.getReadableDatabase();
+                String ID1 = uri.getPathSegments().get(1);
+                cursor = dbHelper.query(Contract.MoviesHighestRated.TableName, projection, SelectByIDFromMostRat, new String[]{ID1}, null, null, sortOrder);
+                break;
+            case mMostRatedMoviesByFav:
+                dbHelper = moviesOpenHelper.getReadableDatabase();
+                cursor = dbHelper.query(Contract.MoviesHighestRated.TableName, projection, SelectFavFromMostRat, null, null, null, sortOrder);
                 break;
         }
         if (cursor != null)
@@ -64,48 +87,63 @@ public class MoviesProvider extends ContentProvider {
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         int type = uriMatcher.match(uri);
         switch (type) {
-            case AllMovies:
-                return Contract.Movies.MOVIE_DIR;
-            case MoviesByID:
-                return Contract.Movies.MOVIE_ITEM;
-            case FavouriteMovies:
-                return Contract.Movies.MOVIE_DIR;
+            case mAllMoviesMostPop:
+                return Contract.MoviesMostPop.MOVIE_DIR;
+            case mMostPopMoviesByID:
+                return Contract.MoviesMostPop.MOVIE_ITEM;
+            case mMostPopMoviesByFav:
+                return Contract.MoviesMostPop.MOVIE_DIR;
+
+            case mAllMoviesMostRated:
+                return Contract.MoviesHighestRated.MOVIE_DIR;
+            case mMostRatedMoviesByID:
+                return Contract.MoviesHighestRated.MOVIE_ITEM;
+            case mMostRatedMoviesByFav:
+                return Contract.MoviesHighestRated.MOVIE_DIR;
             default:
                 return "wrong uri";
         }
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
         dbHelper = moviesOpenHelper.getWritableDatabase();
         Uri rUri = null;
-        try {
-            long id = dbHelper.insert(Contract.Movies.TableName, Contract.Movies.ID, values);
-            if (id > 0) {
-                rUri = Contract.Movies.buildMovieID(id);
-                getContext().getContentResolver().notifyChange(uri, null);
-                Log.i(TAG, "inserted");
-            } else
-                Log.i(TAG, "Not inserted");
-
-
-        } catch (Exception e) {
-            Log.e(TAG, "error ", e);
+        long id = -1;
+        switch (uriMatcher.match(uri)) {
+            case mAllMoviesMostRated:
+                id = dbHelper.insert(Contract.MoviesHighestRated.TableName, Contract.MoviesHighestRated.ID, values);
+                if (id > -1)
+                    rUri = Contract.MoviesHighestRated.buildMovieID(id);
+                break;
+            case mAllMoviesMostPop:
+                id = dbHelper.insert(Contract.MoviesMostPop.TableName, Contract.MoviesMostPop.ID, values);
+                if (id > -1)
+                    rUri = Contract.MoviesMostPop.buildMovieID(id);
         }
+        if (id > -1) {
+            getContext().getContentResolver().notifyChange(uri, null);
+            Log.i(TAG, "inserted");
+        } else
+            Log.i(TAG, "Not inserted");
+
         return rUri;
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         dbHelper = moviesOpenHelper.getWritableDatabase();
         int id = 0;
-        try {
-            id = dbHelper.delete(Contract.Movies.TableName, selection, selectionArgs);
-        } catch (Exception e) {
-            Log.e(TAG, "error", e);
+        switch (uriMatcher.match(uri)) {
+            case mAllMoviesMostRated:
+                id = dbHelper.delete(Contract.MoviesHighestRated.TableName, Contract.MoviesHighestRated.MOVIE_iD + "=?", selectionArgs);
+                break;
+            case mAllMoviesMostPop:
+                id = dbHelper.delete(Contract.MoviesMostPop.TableName, Contract.MoviesMostPop.MOVIE_iD + "=?", selectionArgs);
+
         }
         if (id > 0)
             getContext().getContentResolver().notifyChange(uri, null);
@@ -113,9 +151,16 @@ public class MoviesProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         int updated = -1;
-        updated = dbHelper.update(Contract.Movies.TableName, values, SelectByID, selectionArgs);
+        switch (uriMatcher.match(uri)) {
+            case mAllMoviesMostRated:
+                updated = dbHelper.update(Contract.MoviesHighestRated.TableName, values, SelectByIDFromMostRat, selectionArgs);
+                break;
+            case mAllMoviesMostPop:
+                updated = dbHelper.update(Contract.MoviesMostPop.TableName, values, SelectByIDFromMostPop, selectionArgs);
+
+        }
         if (updated > 0)
             getContext().getContentResolver().notifyChange(uri, null);
         return updated;
@@ -123,21 +168,39 @@ public class MoviesProvider extends ContentProvider {
     }
 
     private UriMatcher buildUriMatcher() {
+
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(Contract.CONTENT_BASE, Contract.MOVIES_PATH, AllMovies);
-        uriMatcher.addURI(Contract.CONTENT_BASE, Contract.MOVIES_PATH + "/#/", MoviesByID);
-        uriMatcher.addURI(Contract.CONTENT_BASE, Contract.MOVIES_PATH + "/#/#", FavouriteMovies);
+
+       /* most rated uris.*/
+        uriMatcher.addURI(Contract.CONTENT_BASE, Contract.HighestRated_MOVIES_PATH, mAllMoviesMostRated);
+        uriMatcher.addURI(Contract.CONTENT_BASE, Contract.MoviesHighestRated.TableName + "/#/", mMostRatedMoviesByID);
+        uriMatcher.addURI(Contract.CONTENT_BASE, Contract.MoviesHighestRated.TableName + "/#/#", mMostRatedMoviesByFav);
+
+       /* most popular uris.*/
+        uriMatcher.addURI(Contract.CONTENT_BASE, Contract.MostPop_MOVIES_PATH, mAllMoviesMostPop);
+        uriMatcher.addURI(Contract.CONTENT_BASE, Contract.MoviesMostPop.TableName + "/#/", mMostPopMoviesByID);
+        uriMatcher.addURI(Contract.CONTENT_BASE, Contract.MoviesMostPop.TableName + "/#/#", mMostPopMoviesByFav);
+
         return uriMatcher;
     }
 
     @Override
-    public int bulkInsert(Uri uri, @NonNull ContentValues[] values) {
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
         int id = -1;
         try {
             dbHelper.beginTransaction();
             for (ContentValues value : values) {
                 if (value != null) {
-                    id = (int) dbHelper.insert(Contract.Movies.TableName, Contract.Movies.ID, value);
+                    switch (uriMatcher.match(uri)) {
+                        case mAllMoviesMostRated:
+                            id = (int) dbHelper.insert(Contract.MoviesHighestRated.TableName, Contract.MoviesHighestRated.ID, value);
+                            break;
+                        case mAllMoviesMostPop:
+                            id = (int) dbHelper.insert(Contract.MoviesMostPop.TableName, Contract.MoviesMostPop.ID, value);
+                            break;
+
+                    }
+//                    id = (int) dbHelper.insert(Contract.Movies.TableName, Contract.Movies.ID, value);
                     if (id > 0) {
                         getContext().getContentResolver().notifyChange(uri, null);
                         Log.i(TAG, "inserted");

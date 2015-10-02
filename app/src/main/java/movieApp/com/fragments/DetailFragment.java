@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
 import android.util.Log;
@@ -77,9 +78,12 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
                 mResultsEntity = getIntent.getParcelable(mKeyIntent);
         }
         init();
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String mSortBy = preferences.getString(getString(R.string.sorting), getString(R.string.most_popular));
         list.addHeaderView(header);
         if (mResultsEntity != null) {
-            final DatabaseSource source = new DatabaseSource(getActivity());
+
+            final DatabaseSource source = new DatabaseSource(getActivity(),mSortBy);
             final int check = source.isFavourite(mResultsEntity.getId());
             if (check == 1)
                 favourite.setBackgroundColor(Color.rgb(198, 226, 255));
@@ -133,7 +137,7 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
         int dimens = (int) getActivity().getResources().getDimension(R.dimen.detailPoster);
         Picasso.with(getActivity()).load("https://image.tmdb.org/t/p/w185" + mResultsEntity.getPoster_path())
                 .resize(dimens, dimens + 100).into(poster);
-        if (!mResultsEntity.getRelease_date().isEmpty()) {
+        if (mResultsEntity.getRelease_date()!=null) {
             String date_obj = mResultsEntity.getRelease_date();
             int date = formatDate(date_obj);
             year.setText(date + "");
