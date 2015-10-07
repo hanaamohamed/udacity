@@ -12,17 +12,16 @@ import android.support.v4.view.ViewPager;
 
 import activity.com.movietesttwo.movieApp.com.R;
 import movieApp.com.classes.Response;
-import movieApp.com.fragments.FavouriteFragment;
+import movieApp.com.fragments.FavoriteFragment;
 import movieApp.com.fragments.MainFragment;
 import movieApp.com.fragments.DetailFragment;
 
 
-public class MainActivity extends ActionBarActivity implements ActionBar.TabListener,MainFragment.Callback,FavouriteFragment.CallBackFavourite
+public class MainActivity extends ActionBarActivity implements ActionBar.TabListener,MainFragment.Callback,FavoriteFragment.CallBackFavourite
 {
 
     ViewPager pager;
     static public Boolean twoPane = false;
-    String mSelectedFragments = "home";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +72,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         actionBar.addTab(tab1);
 
         ActionBar.Tab tab2 = actionBar.newTab();
-        tab2.setText("Favourites");
+        tab2.setText("Favorite");
         tab2.setTabListener(this);
         actionBar.addTab(tab2);
     }
@@ -163,7 +162,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 case 0:
                     return new MainFragment();
                 case 1:
-                    return new FavouriteFragment();
+                    return new FavoriteFragment();
                 default:
                     return null;
             }

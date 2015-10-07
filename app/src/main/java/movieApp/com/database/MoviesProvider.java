@@ -22,6 +22,11 @@ public class MoviesProvider extends ContentProvider {
     private static final int mMostRatedMoviesByID = 5;
     private static final int mMostRatedMoviesByFav = 6;
 
+    /*favourites*/
+    private static final int mAllFavourites = 7;
+    private static final int mFavouriteById = 8;
+
+
     private static final String TAG = "ContentProvider";
 
 
@@ -79,6 +84,16 @@ public class MoviesProvider extends ContentProvider {
                 dbHelper = moviesOpenHelper.getReadableDatabase();
                 cursor = dbHelper.query(Contract.MoviesHighestRated.TableName, projection, SelectFavFromMostRat, null, null, null, sortOrder);
                 break;
+            case mAllFavourites:
+                dbHelper = moviesOpenHelper.getReadableDatabase();
+                cursor = dbHelper.query(Contract.Favorite.TableName, projection, null, null, null, null, sortOrder);
+                break;
+            case mFavouriteById:
+                dbHelper = moviesOpenHelper.getReadableDatabase();
+                String id = uri.getLastPathSegment();
+                cursor = dbHelper.query(Contract.Favorite.TableName, new String[]{Contract.Favorite.MOVIE_iD},
+                        Contract.Favorite.MOVIE_iD + "=?", new String[]{id}, null, null, sortOrder);
+                break;
         }
         if (cursor != null)
             cursor.setNotificationUri(getContext().getContentResolver(), uri);
@@ -123,6 +138,10 @@ public class MoviesProvider extends ContentProvider {
                 id = dbHelper.insert(Contract.MoviesMostPop.TableName, Contract.MoviesMostPop.ID, values);
                 if (id > -1)
                     rUri = Contract.MoviesMostPop.buildMovieID(id);
+            case mAllFavourites:
+                id = dbHelper.insert(Contract.Favorite.TableName, Contract.Favorite.ID, values);
+                if (id > -1)
+                    rUri = Contract.Favorite.buildMovieID(id);
         }
         if (id > -1) {
             getContext().getContentResolver().notifyChange(uri, null);
@@ -143,6 +162,11 @@ public class MoviesProvider extends ContentProvider {
                 break;
             case mAllMoviesMostPop:
                 id = dbHelper.delete(Contract.MoviesMostPop.TableName, Contract.MoviesMostPop.MOVIE_iD + "=?", selectionArgs);
+                break;
+            case mFavouriteById:
+                String deletedID = uri.getLastPathSegment();
+                id = dbHelper.delete(Contract.Favorite.TableName, Contract.Favorite.MOVIE_iD + "=?", new String[]{deletedID});
+                break;
 
         }
         if (id > 0)
@@ -180,6 +204,11 @@ public class MoviesProvider extends ContentProvider {
         uriMatcher.addURI(Contract.CONTENT_BASE, Contract.MostPop_MOVIES_PATH, mAllMoviesMostPop);
         uriMatcher.addURI(Contract.CONTENT_BASE, Contract.MoviesMostPop.TableName + "/#/", mMostPopMoviesByID);
         uriMatcher.addURI(Contract.CONTENT_BASE, Contract.MoviesMostPop.TableName + "/#/#", mMostPopMoviesByFav);
+
+        /*favourites*/
+        uriMatcher.addURI(Contract.CONTENT_BASE, Contract.FavouritePAth, mAllFavourites);
+        uriMatcher.addURI(Contract.CONTENT_BASE, Contract.FavouritePAth + "/#", mFavouriteById);
+
 
         return uriMatcher;
     }

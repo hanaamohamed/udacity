@@ -40,6 +40,17 @@ public class DatabaseSource {
 
     }
 
+    public boolean unlike(Response.ResultsEntity resultsEntity) {
+        boolean check = false;
+        Uri uri = Contract.Favorite.CONTENT_MOVIES_URI.buildUpon().appendEncodedPath(String.valueOf(resultsEntity.getId())).build();
+        int deletedRow = context.getContentResolver().delete(uri, null, null);
+        if (deletedRow > 0)
+            check = true;
+
+        return check;
+
+    }
+
 
     public boolean insertAll(List<Response.ResultsEntity> resultsEntities, String TableName) {
         boolean check = false;
@@ -123,69 +134,23 @@ public class DatabaseSource {
         return id;
     }
 
-    public int favourite(long id, int fav) {
-        Uri uri = null;
-        String column = null;
-        if (Objects.equals(mTableName, MOSTPOP)) {
-            uri = Contract.MoviesMostPop.CONTENT_MOVIES_URI;
-            column = Contract.MoviesMostPop.FAVOURITE;
-        }
-        if (Objects.equals(mTableName, HIGHESTRATED)) {
-            uri = Contract.MoviesHighestRated.CONTENT_MOVIES_URI;
-            column = Contract.MoviesHighestRated.FAVOURITE;
-        }
+
+    public boolean favoriteMovie(Response.ResultsEntity movie) {
+        boolean check = false;
+        Uri uri = Contract.Favorite.CONTENT_MOVIES_URI;
         ContentValues values = new ContentValues();
-        values.put(column, fav);
-        assert uri != null;
-        return context.getContentResolver().update(uri, values, null, new String[]{String.valueOf(id)});
+        values.put(Contract.Favorite.MOVIE_iD, movie.getId());
+        values.put(Contract.Favorite.MOVIE_TITLE, movie.getOriginal_title());
+        values.put(Contract.Favorite.MOVIE_OVERVIEW, movie.getOverview());
+        values.put(Contract.Favorite.MOVIE_DATE, movie.getRelease_date());
+        values.put(Contract.Favorite.MOVIE_RATE, movie.getVote_average());
+        values.put(Contract.Favorite.MOVIE_POSTER_PATH, movie.getPoster_path());
+        int id = Integer.parseInt(context.getContentResolver().insert(uri, values).getLastPathSegment());
+        if (id > 0)
+            check = true;
+        return check;
     }
 
-    public ArrayList<Response.ResultsEntity> retrieveFav() {
-        ArrayList<Response.ResultsEntity> resultsEntities = new ArrayList<>();
-        Uri uri = null;
-        String[] columns = new String[6];
-
-        if (Objects.equals(mTableName, MOSTPOP)) {
-            uri = Contract.MoviesMostPop.CONTENT_MOVIES_URI.buildUpon().appendPath("0").appendPath("1").build();
-            columns[0] = Contract.MoviesMostPop.MOVIE_iD;
-            columns[1] = Contract.MoviesMostPop.MOVIE_TITLE;
-            columns[2] = Contract.MoviesMostPop.MOVIE_DATE;
-            columns[3] = Contract.MoviesMostPop.MOVIE_OVERVIEW;
-            columns[4] = Contract.MoviesMostPop.MOVIE_POSTER_PATH;
-            columns[5] = Contract.MoviesMostPop.MOVIE_RATE;
-        }
-        if (Objects.equals(mTableName, HIGHESTRATED)) {
-            uri = Contract.MoviesHighestRated.CONTENT_MOVIES_URI.buildUpon().appendPath("0").appendPath("1").build();
-            columns[0] = Contract.MoviesHighestRated.MOVIE_iD;
-            columns[1] = Contract.MoviesHighestRated.MOVIE_TITLE;
-            columns[2] = Contract.MoviesHighestRated.MOVIE_DATE;
-            columns[3] = Contract.MoviesHighestRated.MOVIE_OVERVIEW;
-            columns[4] = Contract.MoviesHighestRated.MOVIE_POSTER_PATH;
-            columns[5] = Contract.MoviesHighestRated.MOVIE_RATE;
-        }
-        assert uri != null;
-        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
-        try {
-            assert cursor != null;
-            if (cursor.moveToFirst()) {
-                while (cursor.moveToNext()) {
-                    Response.ResultsEntity entity = new Response.ResultsEntity();
-                    entity.setId(cursor.getInt(cursor.getColumnIndex(columns[0])));
-                    entity.setTitle(cursor.getString(cursor.getColumnIndex(columns[1])));
-                    entity.setRelease_date(cursor.getString(cursor.getColumnIndex(columns[2])));
-                    entity.setOverview(cursor.getString(cursor.getColumnIndex(columns[3])));
-                    entity.setPoster_path(cursor.getString(cursor.getColumnIndex(columns[4])));
-                    entity.setVote_average(cursor.getDouble(cursor.getColumnIndex(columns[5])));
-                    resultsEntities.add(entity);
-                }
-            }
-        } finally {
-            assert cursor != null;
-            cursor.close();
-        }
-
-        return resultsEntities;
-    }
 
     public ArrayList<Response.ResultsEntity> allMovies() {
         ArrayList<Response.ResultsEntity> resultsEntities = new ArrayList<>();
@@ -236,26 +201,17 @@ public class DatabaseSource {
         return resultsEntities;
     }
 
-    public int isFavourite(long id) {
-        int checked = 0;
-        Uri uri = null;
-        String column = null;
-        if (Objects.equals(mTableName, MOSTPOP)) {
-            uri = Contract.MoviesMostPop.CONTENT_MOVIES_URI.buildUpon().appendPath(String.valueOf(id)).build();
-            column = Contract.MoviesMostPop.FAVOURITE;
-        }
-        if (Objects.equals(mTableName, HIGHESTRATED)) {
-            uri = Contract.MoviesHighestRated.CONTENT_MOVIES_URI.buildUpon().appendPath(String.valueOf(id)).build();
-            column = Contract.MoviesHighestRated.FAVOURITE;
 
-        }
-        assert uri != null;
-        Cursor cursor = context.getContentResolver().query(uri, new String[]{column}, null, new String[]{String.valueOf(id)}, null);
+
+    public int isFavorite(long id) {
+        int checked = 0;
+        Uri uri = Contract.Favorite.CONTENT_MOVIES_URI.buildUpon().appendPath(String.valueOf(id)).build();
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
 
         try {
             assert cursor != null;
             if (cursor.moveToFirst()) {
-                checked = cursor.getInt(cursor.getColumnIndex(column));
+                checked = 1;
             }
         } finally {
             assert cursor != null;

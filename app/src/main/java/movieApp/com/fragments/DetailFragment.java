@@ -11,6 +11,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -50,7 +53,7 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
     TextView year;
     TextView min;
     TextView rate, description;
-    Button favourite;
+    Button Favorite;
     View root, header;
     ListView list;
     ProgressBar pb;
@@ -59,6 +62,7 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
     public static final String DETAILS_TAG = "details";
     private SharedPreferences preferences;
     private int mLoaderID = 1;
+    String mTrailer;
 
     public DetailFragment() {
         setHasOptionsMenu(true);
@@ -83,22 +87,22 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
         list.addHeaderView(header);
         if (mResultsEntity != null) {
 
-            final DatabaseSource source = new DatabaseSource(getActivity(),mSortBy);
-            final int check = source.isFavourite(mResultsEntity.getId());
+            final DatabaseSource source = new DatabaseSource(getActivity(), mSortBy);
+            final int check = source.isFavorite(mResultsEntity.getId());
             if (check == 1)
-                favourite.setBackgroundColor(Color.rgb(198, 226, 255));
+                Favorite.setBackgroundColor(Color.rgb(198, 226, 255));
             else
-                favourite.setBackgroundColor(Color.LTGRAY);
+                Favorite.setBackgroundColor(Color.LTGRAY);
 
-            favourite.setOnClickListener(new View.OnClickListener() {
+            Favorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (check == 1) {
-                        favourite.setBackgroundColor(Color.LTGRAY);
-                        source.favourite(mResultsEntity.getId(), 0);
+                        Favorite.setBackgroundColor(Color.LTGRAY);
+                        source.unlike(mResultsEntity);
                     } else {
-                        favourite.setBackgroundColor(Color.rgb(198, 226, 255));
-                        source.favourite(mResultsEntity.getId(), 1);
+                        Favorite.setBackgroundColor(Color.rgb(198, 226, 255));
+                        source.favoriteMovie(mResultsEntity);
 
                     }
                 }
@@ -137,11 +141,10 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
         int dimens = (int) getActivity().getResources().getDimension(R.dimen.detailPoster);
         Picasso.with(getActivity()).load("https://image.tmdb.org/t/p/w185" + mResultsEntity.getPoster_path())
                 .resize(dimens, dimens + 100).into(poster);
-        if (mResultsEntity.getRelease_date()!=null) {
+        if (mResultsEntity.getRelease_date() != null) {
             String date_obj = mResultsEntity.getRelease_date();
             int date = formatDate(date_obj);
             year.setText(date + "");
-            mResultsEntity.setRelease_date(date + "");
         } else
             year.setText("N/A");
     }
@@ -162,7 +165,7 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
         min = (TextView) header.findViewById(R.id.min);
         rate = (TextView) header.findViewById(R.id.rate);
         description = (TextView) header.findViewById(R.id.des);
-        favourite = (Button) header.findViewById(R.id.fav);
+        Favorite = (Button) header.findViewById(R.id.fav);
         list = (ListView) root.findViewById(R.id.trailerList);
         pb = (ProgressBar) root.findViewById(R.id.progressBar2);
     }
@@ -173,6 +176,7 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
             movieDetailsAdapter.addSection("Trailers");
             List<Video.ResultsEntity> videos = (List<Video.ResultsEntity>) hashMap.get("videos");
             if (videos != null) {
+                mTrailer = "http://www." + videos.get(0).getSite() + ".com/watch?v=" + videos.get(0).getKey();
                 for (Video.ResultsEntity video : videos)
                     movieDetailsAdapter.addItem(video);
             }
@@ -216,5 +220,32 @@ public class DetailFragment extends Fragment implements android.support.v4.app.L
     @Override
     public void onLoaderReset(Loader<HashMap> loader) {
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.favourite_menu, menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.share:
+                if (mTrailer != null) {
+                    Intent share = new Intent();
+                    share.setAction(Intent.ACTION_SEND);
+                    share.setType("text/plain");
+                    share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                    share.putExtra(Intent.EXTRA_SUBJECT, "Favorite movie");
+                    share.putExtra(Intent.EXTRA_TEXT, mTrailer);
+
+                    startActivity(share);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

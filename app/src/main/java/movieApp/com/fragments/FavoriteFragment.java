@@ -2,15 +2,15 @@ package movieApp.com.fragments;
 
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +18,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 import activity.com.movietesttwo.movieApp.com.R;
 import movieApp.com.UI.cursorAdapter;
@@ -28,7 +26,7 @@ import movieApp.com.database.Contract;
 
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class FavouriteFragment extends Fragment implements LoaderCallbacks<Cursor> {
+public class FavoriteFragment extends Fragment implements LoaderCallbacks<Cursor> {
     private static final int LoaderID = 0;
     ArrayList<Response.ResultsEntity> resultsEntities;
     GridView gridView;
@@ -42,14 +40,14 @@ public class FavouriteFragment extends Fragment implements LoaderCallbacks<Curso
     String[] AllColumns = new String[0];
 
 
-    public FavouriteFragment() {
+    public FavoriteFragment() {
         setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_favourite, container, false);
+        View root = inflater.inflate(R.layout.fragment_favorite, container, false);
         gridView = (GridView) root.findViewById(R.id.movies);
         if (mCursor != null && mCursor.moveToFirst())
             ((CallBackFavourite) getActivity()).getFirstFavouriteItem(cursorToObject(mCursor));
@@ -66,7 +64,7 @@ public class FavouriteFragment extends Fragment implements LoaderCallbacks<Curso
     @Override
     public void onResume() {
         super.onResume();
-        getLoaderManager().restartLoader(LoaderID,null,this);
+        getLoaderManager().restartLoader(LoaderID, null, this);
     }
 
     @Override
@@ -79,14 +77,14 @@ public class FavouriteFragment extends Fragment implements LoaderCallbacks<Curso
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mSortBy = preferences.getString(getString(R.string.sorting), getString(R.string.most_popular));
-        getPref();
-        return  new CursorLoader(getActivity(), mUri, null, null, null, null);
+        mUri = Contract.Favorite.CONTENT_MOVIES_URI;
+        return new CursorLoader(getActivity(), mUri, null, null, null, null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursor = data;
-        mCursorAdapter = new cursorAdapter(getActivity(), data,mSortBy);
+        mCursorAdapter = new cursorAdapter(getActivity(), data, mSortBy);
         mCursorAdapter.swapCursor(data);
         gridView.setAdapter(mCursorAdapter);
 
@@ -94,11 +92,11 @@ public class FavouriteFragment extends Fragment implements LoaderCallbacks<Curso
 
     Response.ResultsEntity cursorToObject(Cursor data) {
         Response.ResultsEntity object = new Response.ResultsEntity();
-        object.setId(data.getInt(data.getColumnIndex(columns[0])));
-        object.setOriginal_title(data.getString(data.getColumnIndex(columns[1])));
-        object.setRelease_date(data.getString(data.getColumnIndex(columns[2])));
-        object.setOverview(data.getString(data.getColumnIndex(columns[3])));
-        object.setPoster_path(data.getString(data.getColumnIndex(columns[4])));
+        object.setId(data.getInt(data.getColumnIndex(Contract.Favorite.MOVIE_iD)));
+        object.setOriginal_title(data.getString(data.getColumnIndex(Contract.Favorite.MOVIE_TITLE)));
+        object.setRelease_date(data.getString(data.getColumnIndex(Contract.Favorite.MOVIE_DATE)));
+        object.setOverview(data.getString(data.getColumnIndex(Contract.Favorite.MOVIE_OVERVIEW)));
+        object.setPoster_path(data.getString(data.getColumnIndex(Contract.Favorite.MOVIE_POSTER_PATH)));
         return object;
     }
 
@@ -107,32 +105,11 @@ public class FavouriteFragment extends Fragment implements LoaderCallbacks<Curso
         mCursorAdapter.swapCursor(null);
     }
 
-    public void getPref() {
-
-        if (Objects.equals(mSortBy, getActivity().getString(R.string.most_popular))) {
-            mUri = Contract.MoviesMostPop.CONTENT_MOVIES_URI.buildUpon().appendPath("0").appendPath("1").build();
-            columns[0] = Contract.MoviesMostPop.MOVIE_iD;
-            columns[1] = Contract.MoviesMostPop.MOVIE_TITLE;
-            columns[2] = Contract.MoviesMostPop.MOVIE_DATE;
-            columns[3] = Contract.MoviesMostPop.MOVIE_OVERVIEW;
-            columns[4] = Contract.MoviesMostPop.MOVIE_POSTER_PATH;
-            AllColumns = Contract.MoviesMostPop.AllColumns;
-        }
-        if (Objects.equals(mSortBy, getActivity().getString(R.string.highestRated))) {
-            mUri = Contract.MoviesHighestRated.CONTENT_MOVIES_URI.buildUpon().appendPath("0").appendPath("1").build();
-            columns[0] = Contract.MoviesHighestRated.MOVIE_iD;
-            columns[1] = Contract.MoviesHighestRated.MOVIE_TITLE;
-            columns[2] = Contract.MoviesHighestRated.MOVIE_DATE;
-            columns[3] = Contract.MoviesHighestRated.MOVIE_OVERVIEW;
-            columns[4] = Contract.MoviesHighestRated.MOVIE_POSTER_PATH;
-            AllColumns = Contract.MoviesHighestRated.AllColumns;
-
-        }
-    }
 
     public interface CallBackFavourite {
         void getFirstFavouriteItem(Response.ResultsEntity firstMovie);
 
         void getSelectedFavouriteItem(Response.ResultsEntity selectedMovie);
     }
+
 }

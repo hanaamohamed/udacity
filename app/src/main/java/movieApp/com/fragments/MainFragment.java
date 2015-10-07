@@ -84,14 +84,14 @@ public class MainFragment extends Fragment implements android.support.v4.app.Loa
                 mResultMovies = databaseSource.allMovies();
 
         } else {
-            ((Callback) getActivity()).getTheFirstItem(mResultMovies.get(0));
 
             if (Objects.equals(mSortBy, getString(R.string.most_popular)))
-                Toast.makeText(getActivity(), "" + databaseSource.insertAll(mResultMovies, getString(R.string.most_popular)), Toast.LENGTH_LONG).show();
+                databaseSource.insertAll(mResultMovies, getString(R.string.most_popular));
             if (Objects.equals(mSortBy, getString(R.string.highestRated)))
                 databaseSource.insertAll(mResultMovies, getString(R.string.highestRated));
 
         }
+        ((Callback) getActivity()).getTheFirstItem(mResultMovies.get(0));
         ArrayList<String> imgList = new ArrayList<>();
         for (int i = 0; i < mResultMovies.size(); i++) {
             imgList.add(mResultMovies.get(i).getPoster_path());
